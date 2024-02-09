@@ -1,19 +1,12 @@
 {% include "livros/partials/head.html" %}
 <body>
-    <header class="main-header-container">
-        <div class="main-header container">
-
-            <h1>
-                <a class="main-logo" href="/">
-                    <i class="fas fa-book  main-logo-icon">
-                    <span class="main-logo-text">biblioteca</span>
-                    </i>
-                </a>
-            </h1>
-
+    {% include "livros/partials/header.html" %}
+    {% include "livros/partials/search.html" %}
+    <main class="main-content-container">
+        <div class="main-content main-content-list container">
+            {% include "livros/partials/livros.html" %}
         </div>
-    </header>
-
+    </main>
 </body>
-
+{% include "livros/partials/footer.html" %}
 </html>
