@@ -9,6 +9,7 @@ class Livro(models.Model):
     paginas = models.IntegerField(null=True, blank=True)
     autor = models.CharField(max_length=50, null=True, blank=True)
     emprestado = models.BooleanField(default=False)
+    data_publicacao = models.DateField(null=True, blank=True)
     data_cadastro = models.DateField(null=True, blank=True)
     data_emprestimo = models.DateTimeField(null=True, blank=True)
     data_devolucao = models.DateTimeField(null=True, blank=True)
@@ -16,7 +17,4 @@ class Livro(models.Model):
     cover = models.ImageField(upload_to='livros/covers/%Y/%m/%d/')
     
     def __str__(self):
-        return self.titulo
-    
-    def __str__(self):
-        return self.autor
+        return f"{self.titulo} - {self.autor}" 
