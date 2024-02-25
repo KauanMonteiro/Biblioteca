@@ -1,61 +1,59 @@
+# views.py
+
 from django.shortcuts import render, redirect
-from django.http import HttpResponse
-from .models import usuario
+from django.urls import reverse
 from hashlib import sha256
+from .models import Usuario
 
-def login(request):
-    if request.session.get('usuario'):
-        return redirect('/livro/home/')
-    status = request.GET.get('status')
-    return render(request, 'login.html', {'status': status})
-
-def cadastro(request):
-    if request.session.get('usuario'):
-        return redirect('/livro/home/')
-    status = request.GET.get('status')
-    return render(request, 'cadastro.html', {'status': status})
+def home(request):
+    return render(request, 'livros/home.html')
 
 def valida_cadastro(request):
-    nome = request.POST.get('nome')
-    senha = request.POST.get('senha')
-    email = request.POST.get('email')
+    if request.method == 'POST':
+        nome = request.POST.get('nome')
+        senha = request.POST.get('senha')
+        email = request.POST.get('email')
 
-    usuario_obj = usuario.objects.filter(email=email)
+        if not nome.strip() or not email.strip() or not senha.strip():
+            context = {'status': 'Por favor, preencha todos os campos.'}
+            return render(request, 'cadastro.html', context)
 
-    if len(nome.strip()) == 0 or len(email.strip()) == 0:
-        return redirect('/usuario/cadastro/?status=1')
+        if len(senha) < 8:
+            context = {'status': 'A senha deve ter pelo menos 8 caracteres.'}
+            return render(request, 'cadastro.html', context)
 
-    if len(senha) < 8:
-        return redirect('/usuario/cadastro/?status=2')
+        if Usuario.objects.filter(email=email).exists():
+            context = {'status': 'Já existe um usuário com este e-mail.'}
+            return render(request, 'cadastro.html', context)
 
-    if usuario_obj.exists():
-        return redirect('/usuario/cadastro/?status=3')
+        try:
+            senha = sha256(senha.encode()).hexdigest()
+            usuario_obj = Usuario.objects.create(nome=nome, senha=senha, email=email)
+            context = {'status': 'Cadastro realizado com sucesso. Faça o login para acessar sua conta.'}
+            return redirect(reverse('login'))
+        except Exception as e:
+            print(e)
+            context = {'status': 'Ocorreu um erro ao cadastrar o usuário.'}
+            return render(request, 'cadastro.html', context)
 
-    try:
-        senha = sha256(senha.encode()).hexdigest()
-        usuario_obj = usuario(nome=nome,
-                              senha=senha,
-                              email=email)
-        usuario_obj.save()
-        return redirect('/usuario/cadastro/?status=0')
-    except Exception as e:
-        print(e)
-        return redirect('/usuario/cadastro/?status=4')
+    return render(request, 'cadastro.html')
 
 def validar_login(request):
-    email = request.POST.get('email')
-    senha = request.POST.get('senha')
+    if request.method == 'POST':
+        email = request.POST.get('email')
+        senha = request.POST.get('senha')
+        senha = sha256(senha.encode()).hexdigest()
 
-    senha = sha256(senha.encode()).hexdigest()
+        usuario_obj = Usuario.objects.filter(email=email, senha=senha).first()
+        if usuario_obj:
+            request.session['usuario'] = usuario_obj.id
+            return redirect(reverse('home'))
+        else:
+            context = {'status': 'E-mail ou senha incorretos.'}
+            return render(request, 'login.html', context)
 
-    usuario_obj = usuario.objects.filter(email=email, senha=senha)
-
-    if usuario_obj.exists():
-        request.session['usuario'] = usuario_obj.first().id
-        return redirect('/livro/home/')
-    else:
-        return redirect('/usuario/login/?status=1')
+    return render(request, 'login.html')
 
 def sair(request):
     request.session.flush()
-    return redirect('/usuario/login/')
+    return redirect(reverse('login'))

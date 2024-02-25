@@ -1,8 +1,10 @@
+from usuario.models import Usuario
 from django.contrib import admin
 
-from django.apps import AppConfig
-
-
-class UsuariosConfig(AppConfig):
-    default_auto_field = 'django.db.models.BigAutoField'
-    name = 'usuarios'
+@admin.register(Usuario)
+class UsuarioAdmin(admin.ModelAdmin):
+    list_display = ('nome', 'email', 'ativo')
+    list_editable = ('email',)
+    readonly_fields = ('senha',)
+    search_fields = ('nome', 'email')
+    list_filter = ('ativo',)
