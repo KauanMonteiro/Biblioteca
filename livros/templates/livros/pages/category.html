@@ -1,0 +1,17 @@
+{% extends "global/home.html" %}
+
+{% block title %}Category | {% endblock title %}
+
+{% block content %}
+
+
+<body>
+    <main class="main-content-container">
+        <div class="main-content main-content-list container">
+            {% include "livros/partials/livros.html" %}
+        </div>
+    </main>
+    {% include "livros/partials/footer.html" %}
+</body>
+
+{% endblock content %}

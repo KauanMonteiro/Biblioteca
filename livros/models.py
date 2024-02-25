@@ -2,6 +2,11 @@ from pyexpat import model
 from unittest.util import _MAX_LENGTH
 from django.db import models
 
+class Category(models.Model):
+    name = models.CharField(max_length=65)
+
+    def __str__(self):
+        return self.name
 
 class Livro(models.Model):
     titulo = models.CharField(max_length=65)
@@ -14,6 +19,7 @@ class Livro(models.Model):
     data_emprestimo = models.DateTimeField(null=True, blank=True)
     data_devolucao = models.DateTimeField(null=True, blank=True)
     tempo_duracao = models.DurationField(null=True, blank=True)
+    category = models.ManyToManyField(Category)
     cover = models.ImageField(upload_to='livros/covers/%Y/%m/%d/')
     
     def __str__(self):

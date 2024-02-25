@@ -17,11 +17,14 @@
             {{ livro.data_publicacao|date:"d/m/Y" }}
         </span>
         <span class="livro-author-item">
-            <a href="/livros/categoria/ficcao/">
-                <i class="fas fa-layer-group"></i>
-                <span>Gênero: Ficção</span>
-            </a>
+            <i class="fas fa-layer-group"></i>
+            {% for categoria in livro.category.all %}
+                <a href="{% url 'category' categoria.id %}">
+                    <span>{{ categoria.name }}</span>
+                </a>
+            {% endfor %}
         </span>
+        
     </div>
 
     <div class="livro-content">
