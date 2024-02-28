@@ -24,12 +24,12 @@
                 </a>
             {% endfor %}
         </span>
-        
     </div>
 
     <div class="livro-content">
         <p>{{ livro.descricao }}</p>
     </div>
+
     <div class="livro-meta-container">
         <div class="livro-meta livro-preparation">
             <h3 class="livro-meta-title"><i class=""></i> Páginas</h3>
@@ -41,19 +41,25 @@
             <h3 class="livro-meta-title"><i class=""></i> Disponibilidade</h3>
             <div class="livro-meta-text">
                 {% if livro.emprestado %}
-                Disponível para empréstimo
-                {% else %}
                 Indisponível para empréstimo
+                <br>
+                Por favor, devolva este livro em breve.
+                {% else %}
+                Disponível para empréstimo
                 {% endif %}
             </div>
         </div>
     </div>
 
     <footer class="livro-footer">
-        <a class="livro-read-more button button-dark button-full-width" href="/livros/{{ livro.id }}/">
-            <i class="fas fa-eye"></i>
-            <span>Ver mais...</span>
-        </a>
+        {% if not livro.emprestado %}
+            <a class="livro-read-more button button-dark button-full-width" href="{% url 'emprestar_livro' livro.id %}">
+                <i class="fas fa-handshake"></i>
+                <span>Emprestar</span>
+            </a>
+        {% else %}
+            <span>Por favor, devolva este livro em breve.</span>
+        {% endif %}
     </footer>
 </div>
 {% endfor %}
