@@ -58,8 +58,12 @@
                 <span>Emprestar</span>
             </a>
         {% else %}
-            <span>Por favor, devolva este livro em breve.</span>
+            <a class="livro-return button button-dark button-full-width" href="{% url 'devolver_livro' livro.id %}">
+                <i class="fas fa-undo"></i>
+                <span>Devolver</span>
+            </a>
         {% endif %}
     </footer>
+    
 </div>
 {% endfor %}
