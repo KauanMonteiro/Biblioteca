@@ -1,6 +1,7 @@
 from pyexpat import model
 from unittest.util import _MAX_LENGTH
 from django.db import models
+from usuario.models import Usuario
 
 class Category(models.Model):
     name = models.CharField(max_length=65)
@@ -21,6 +22,7 @@ class Livro(models.Model):
     tempo_duracao = models.DurationField(null=True, blank=True)
     category = models.ManyToManyField(Category)
     cover = models.ImageField(upload_to='livros/covers/%Y/%m/%d/')
-    
+    usuario_emprestimo = models.ForeignKey(Usuario, on_delete=models.SET_NULL, null=True, blank=True)
+
     def __str__(self):
         return f"{self.titulo} - {self.autor}" 
