@@ -2,6 +2,7 @@ from django.shortcuts import render, redirect
 from django.http import HttpResponse
 from .models import Usuario
 from hashlib import sha256
+from django.urls import reverse
 
 def login(request):
     if request.session.get('usuario'):
@@ -59,4 +60,4 @@ def validar_login(request):
 
 def sair(request):
     request.session.flush()
-    return redirect('login/')
+    return redirect(reverse('home'))

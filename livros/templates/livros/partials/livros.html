@@ -42,8 +42,7 @@
             <div class="livro-meta-text">
                 {% if livro.emprestado %}
                 Indisponível para empréstimo
-                <br>
-                Por favor, devolva este livro em breve.
+
                 {% else %}
                 Disponível para empréstimo
                 {% endif %}
@@ -58,12 +57,20 @@
                 <span>Emprestar</span>
             </a>
         {% else %}
-            <a class="livro-return button button-dark button-full-width" href="{% url 'devolver_livro' livro.id %}">
-                <i class="fas fa-undo"></i>
-                <span>Devolver</span>
-            </a>
+            {% if livro.emprestado_por_id != request.session.usuario %}
+                <a class="livro-read-more button button-dark button-full-width" href="#">
+                    <i class="fas fa-ban"></i>
+                    <span> indisponível </span>
+                </a>
+            {% else %}
+                <a class="livro-return button button-dark button-full-width" href="{% url 'devolver_livro' livro.id %}">
+                    <i class="fas fa-undo"></i>
+                    <span>Devolver</span>
+                </a>
+            {% endif %}
         {% endif %}
     </footer>
+    
     
 </div>
 {% endfor %}

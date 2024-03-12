@@ -5,7 +5,7 @@ from datetime import datetime, timedelta
 from django.shortcuts import redirect, get_object_or_404
 from django.urls import reverse
 from django.contrib.auth.decorators import login_required
-
+from usuario.models import Usuario
 def home(request):
     livros = Livro.objects.all()
     return render(request, 'livros/pages/home.html', context={'livros': livros})
@@ -18,9 +18,21 @@ def category(request, category_id):
 def livros_por_categoria(request, categoria_id):
     categoria = Category.objects.get(pk=categoria_id)
     livros = Livro.objects.filter(category=categoria)
-    return render(request, 'livros_por_categoria.html', {'livros': livros, 'categoria': categoria})
+    return render(request, 'livros/pages/livros_por_categoria.html', {'livros': livros, 'categoria': categoria})
+
+def area_usuario(request):
+    if 'usuario' not in request.session:
+        return redirect('login')
+    
+    usuario_id = request.session.get('usuario')
+    usuario = get_object_or_404(Usuario, pk=usuario_id)
+    livros_emprestados = Livro.objects.filter(emprestado_por=usuario)
+    return render(request, 'livros/pages/area_usuario.html', {'livros_emprestados': livros_emprestados, 'usuario': usuario})
 
 def emprestar_livro(request, livro_id):
+    if 'usuario' not in request.session:
+        return redirect('login')
+
     livro = get_object_or_404(Livro, pk=livro_id)
     if not livro.emprestado:
         livro.emprestado = True
@@ -28,19 +40,24 @@ def emprestar_livro(request, livro_id):
         livro.data_emprestimo = datetime.now()
         # Definindo a data de devolução como 7 dias após a data de empréstimo
         livro.data_devolucao = livro.data_emprestimo + timedelta(days=7)
+        # Associando o livro ao usuário que está emprestando
+        usuario_id = request.session['usuario']
+        usuario = get_object_or_404(Usuario, pk=usuario_id)
+        livro.emprestado_por = usuario
         livro.save()
         return redirect(reverse('home'))
     else:
-        # Aqui você pode redirecionar para uma página de erro ou exibir uma mensagem informando que o livro já está emprestado
         return redirect(reverse('home'))
-    
 
 def devolver_livro(request, livro_id):
+    if 'usuario' not in request.session:
+        return redirect('login')
+
     livro = get_object_or_404(Livro, pk=livro_id)
-    if livro.emprestado:
+    if livro.emprestado and livro.emprestado_por_id == request.session['usuario']:
         livro.emprestado = False
+        livro.emprestado_por = None  
         livro.save()
         return redirect(reverse('home'))
     else:
-        # Here you can redirect to an error page or display a message indicating that the book is already available
-        return HttpResponse("Este livro já está disponível para empréstimo.")
+        return HttpResponse("Você não pode devolver este livro.")

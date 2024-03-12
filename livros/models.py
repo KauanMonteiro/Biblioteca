@@ -22,7 +22,7 @@ class Livro(models.Model):
     tempo_duracao = models.DurationField(null=True, blank=True)
     category = models.ManyToManyField(Category)
     cover = models.ImageField(upload_to='livros/covers/%Y/%m/%d/')
-    usuario_emprestimo = models.ForeignKey(Usuario, on_delete=models.SET_NULL, null=True, blank=True)
+    emprestado_por = models.ForeignKey(Usuario, on_delete=models.SET_NULL, null=True, blank=True)
 
     def __str__(self):
         return f"{self.titulo} - {self.autor}" 

@@ -1,0 +1,87 @@
+<!-- livros.html -->
+{% extends "global/home.html" %}
+
+{% block title %}Área do Usuário | {% endblock title %}
+
+{% block content %}
+<div class="container mt-5">
+    <h2>Bem-vindo(a), {{ usuario.nome }}!</h2>
+    <h3>Livros emprestados:</h3>
+    {% for livro in livros_emprestados %}
+    <div class="livro livro-list-item">
+        <div class="livro-cover">
+            <img src="{{ livro.cover.url }}" alt="Capa do Livro">
+        </div>
+        <div class="livro-title-container">
+            <h2 class="livro-title">{{ livro.titulo }}</h2>
+        </div>
+
+        <div class="livro-author">
+            <span class="livro-author-item">
+                <i class="fas fa-user"></i>
+                {{ livro.autor }}
+            </span>
+            <span class="livro-author-item">
+                <i class="fas fa-calendar-alt"></i>
+                {{ livro.data_publicacao|date:"d/m/Y" }}
+            </span>
+            <span class="livro-author-item">
+                <i class="fas fa-layer-group"></i>
+                {% for categoria in livro.category.all %}
+                <a href="{% url 'category' categoria.id %}">
+                    <span>{{ categoria.name }}</span>
+                </a>
+                {% endfor %}
+            </span>
+        </div>
+
+        <div class="livro-content">
+            <p>{{ livro.descricao }}</p>
+        </div>
+
+        <div class="livro-meta-container">
+            <div class="livro-meta livro-preparation">
+                <h3 class="livro-meta-title"><i class=""></i> Páginas</h3>
+                <div class="livro-meta-text">
+                    {{ livro.paginas }}
+                </div>
+            </div>
+            <div class="livro-meta livro-servings">
+                <h3 class="livro-meta-title"><i class=""></i> Disponibilidade</h3>
+                <div class="livro-meta-text">
+                    {% if livro.emprestado %}
+                    Indisponível para empréstimo
+
+                    {% else %}
+                    Disponível para empréstimo
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+
+        <footer class="livro-footer">
+            {% if not livro.emprestado %}
+            <a class="livro-read-more button button-dark button-full-width" href="{% url 'emprestar_livro' livro.id %}">
+                <i class="fas fa-handshake"></i>
+                <span>Emprestar</span>
+            </a>
+            {% else %}
+            {% if livro.emprestado_por_id != request.session.usuario %}
+            <a class="livro-read-more button button-dark button-full-width" href="#">
+                <i class="fas fa-ban"></i>
+                <span> indisponível </span>
+            </a>
+            {% else %}
+            <a class="livro-return button button-dark button-full-width" href="{% url 'devolver_livro' livro.id %}">
+                <i class="fas fa-undo"></i>
+                <span>Devolver</span>
+            </a>
+            {% endif %}
+            {% endif %}
+        </footer>
+
+
+    </div>
+    {% endfor %}
+</div>
+{% endblock content %}
