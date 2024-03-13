@@ -61,3 +61,11 @@ def devolver_livro(request, livro_id):
         return redirect(reverse('home'))
     else:
         return HttpResponse("Você não pode devolver este livro.")
+    
+def search(request):
+    if 'search' in request.GET:
+        query = request.GET['search']
+        livros = Livro.objects.filter(titulo__icontains=query)
+        return render(request, 'livros/pages/search_results.html', {'livros': livros, 'query': query})
+    else:
+        return redirect(reverse('home'))

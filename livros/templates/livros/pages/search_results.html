@@ -1,0 +1,11 @@
+{% extends 'global/home.html' %}
+{% block content %}
+    <h2>Resultados da Busca para "{{ query }}"</h2>
+    {% if livros %}
+        <ul>
+            {% include "livros/partials/livros.html" %}
+        </ul>
+    {% else %}
+        <p>Nenhum resultado encontrado para "{{ query }}".</p>
+    {% endif %}
+{% endblock %}

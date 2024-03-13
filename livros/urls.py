@@ -8,4 +8,5 @@ urlpatterns = [
     path('emprestar/<int:livro_id>/', views.emprestar_livro, name='emprestar_livro'),
     path('devolver_livro/<int:livro_id>/', views.devolver_livro, name='devolver_livro'),
     path('area_usuario/', views.area_usuario, name='area_usuario'),
+    path('search/', views.search, name='search'),
 ]
