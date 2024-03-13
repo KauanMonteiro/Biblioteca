@@ -1,0 +1,65 @@
+body {
+  font-family: Arial, sans-serif;
+  background-color: transparent;
+  color: white;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
+
+.container {
+  width: 400px;
+  padding: 20px;
+  background-color: #072d77; /* Cor de fundo */
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+}
+
+.form-group {
+  margin-bottom: 20px;
+}
+
+label {
+  display: block;
+  margin-bottom: 5px;
+}
+
+input[type="text"],
+input[type="password"],
+input[type="email"] {
+  width: calc(100% - 20px);
+  padding: 10px;
+  border: none;
+  border-radius: 5px;
+  box-sizing: border-box;
+  background-color: rgba(255, 255, 255, 0.1); /* Fundo transparente */
+  color: white;
+}
+
+input[type="submit"] {
+  width: calc(100% - 20px);
+  padding: 10px;
+  border: none;
+  border-radius: 5px;
+  background-color: transparent; /* Botão transparente */
+  color: white;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+input[type="submit"]:hover {
+  background-color: rgba(255, 255, 255, 0.1); /* Cor de fundo ao passar o mouse */
+}
+
+a {
+  color: #fff; /* Cor do texto do link */
+  text-decoration: underline; /* Sublinhar o link */
+  transition: color 0.3s; /* Suavizar a transição da cor do texto */
+}
+
+a:hover {
+  color: #006eff; /* Cor do texto do link ao passar o mouse */
+}

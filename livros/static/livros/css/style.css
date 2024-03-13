@@ -1,0 +1,215 @@
+/* Estilo padrão */
+* {
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+  font-family: sans-serif;
+}
+
+html {
+  font-size: 62.5%;
+}
+
+body {
+  font-size: 1.6rem;
+  font-family: sans-serif;
+  background-color: #e0e0e0;
+  color: #444;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: 'Roboto Slab', serif;
+}
+
+.container {
+  max-width: 144rem;
+  margin: 0 auto;
+  padding: 3rem;
+  flex-direction: row;
+  align-items: center;
+}
+
+.main-header-container {
+  background: #001d63;
+  display: flex;
+  align-items: center;
+}
+
+.main-logo {
+  font-size: 4rem;
+  color: #fff;
+  text-decoration: none;
+  display: flex;
+  flex-flow: row nowrap;
+  align-items: center;
+  justify-content: center;
+  width: fit-content;
+  margin: 0 auto;
+}
+
+.main-logo-icon {
+  margin-right: 2rem;
+}
+
+.search-form {
+  border: .1rem solid black;
+  max-width: 64rem;
+  margin: auto;
+  border-radius: 0rem;
+  position: relative;
+  transition: all 300ms ease-in-out;
+}
+
+.search-input, .search-button {
+  border: none;
+  background: none;
+  outline: none;
+}
+
+.search-input {
+  width: 100%;
+  padding-right: 3rem;
+}
+
+.search-button {
+  position: absolute;
+  top: 0;
+  right: 0;
+}
+
+.search-button:focus {
+  outline: 1px solid #fff;
+  background: rgba(0, 0, 0, .05);
+}
+
+.search-form:focus-within {
+  border-color: #269fe6;
+  background-color: #fff;
+}
+
+.search-form:focus-within .search-button {
+  color: #269fe6;
+}
+
+.main-content {
+  padding-top: 0;
+}
+
+.main-content-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
+  gap: 5rem;
+}
+
+.livro {
+  background: #fff;
+  box-shadow: -5px 5px 1px rgba(0, 0, 0, .2);
+  transform: scale(1);
+  transition: all 300ms ease-in-out;
+  border-radius: 2rem;
+  overflow: hidden;
+}
+
+.livro img {
+  max-width: 100%;
+}
+
+.livro-list-item {
+  max-width: 64rem;
+  height: fit-content;
+}
+
+.livro-list-item:hover {
+  transform: scale(1.02);
+  box-shadow: -8px 8px 18px rgba(0, 0, 0, .25);
+}
+
+.livro-title-container {
+  padding: 1rem;
+  padding-bottom: 2rem;
+}
+
+.livro-title-container a {
+  text-decoration: none;
+  color: #001d63;
+}
+
+.livro-author {
+  padding: 0 3rem;
+}
+
+.livro-content {
+  padding: 3rem;
+  padding-top: 2rem;
+}
+
+.livro-author-item {
+  color: #959595;
+  margin-right: 1rem;
+  font-style: italic;
+  margin-right: 1.4rem;
+}
+
+.livro-author a {
+  color: #000;
+  transition: all 300ms ease-in-out;
+  text-decoration: none;
+}
+
+.livro-author a:hover {
+  color: #13141f;
+}
+
+.livro-meta-container {
+  display: flex;
+  flex-flow: row wrap;
+  padding: 3rem;
+  background: #e0e0e0;
+}
+
+.livro-meta {
+  display: flex;
+  flex-flow: column nowrap;
+  flex-shrink: 1;
+  flex-grow: 1;
+  text-align: center;
+}
+
+.livro-meta-litle {
+  font-size: 1.6rem;
+}
+
+
+
+.livro-footer a {
+  background: #0e3d8b;
+  display: block;
+  color: #fff;
+  text-decoration: none;
+  text-align: center;
+  padding: 1.5rem 3rem;
+  transition: all 300ms ease-in-out;
+}
+
+.livro-footer a:hover {
+  filter: brightness(1.5);
+}
+
+.main-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: #001d63;
+  color: #fff;
+  padding: 4rem;
+}
+
+.main-footer a {
+  color: #fff;
+  text-decoration: none;
+  transition: all 300ms ease-in-out;
+}
+
+.main-footer a:hover {
+  filter: brightness(.8);
+}
