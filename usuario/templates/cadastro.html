@@ -11,9 +11,21 @@
     <div class="container">
         <h2>Cadastro</h2>
         {% if status %}
-            <p>{{ status }}</p>
+            <div class="alert {% if status == '0' %}alert-success{% else %}alert-danger{% endif %}" role="alert">
+                {% if status == '0' %}
+                    Cadastro realizado com sucesso
+                {% elif status == '1' %}
+                    Nome e email não podem estar vazios.
+                {% elif status == '2' %}
+                    Sua senha deve ter pelo menos 8 caracteres
+                {% elif status == '3' %}
+                    Usuário já existe no sistema
+                {% elif status == '4' %}
+                    Erro interno do sistema
+                {% endif %}
+            </div>
         {% endif %}
-        <form action="{% url 'cadastro' %}" method="post">
+        <form method="POST" action="{% url 'valida_cadastro' %}" >
             {% csrf_token %}
             <div class="form-group">
                 <label for="nome">Nome:</label>
