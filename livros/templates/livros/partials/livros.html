@@ -1,8 +1,10 @@
 
 <div class="livro livro-list-item">
+    {% if livro.cover.url %}
     <div class="livro-cover">
         <img src="{{ livro.cover.url }}" alt="Capa do Livro">
     </div>
+    {% endif %}
     <div class="livro-title-container">
         <h2 class="livro-title">{{ livro.titulo }}</h2>
     </div>

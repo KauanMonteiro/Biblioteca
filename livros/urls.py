@@ -9,4 +9,7 @@ urlpatterns = [
     path('devolver_livro/<int:livro_id>/', views.devolver_livro, name='devolver_livro'),
     path('area_usuario/', views.area_usuario, name='area_usuario'),
     path('search/', views.search, name='search'),
+    #path('area_admin/'),
+    path('cadastro_livro/', views.cadastrar_livro, name="cadastrar_livro"),
+
 ]

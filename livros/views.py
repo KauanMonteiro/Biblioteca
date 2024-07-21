@@ -66,3 +66,34 @@ def search(request):
         return render(request, 'livros/pages/search_results.html', {'livros': livros, 'query': query})
     else:
         return redirect(reverse('home'))
+
+
+def cadastrar_livro(request):
+    categories = Category.objects.all()
+    
+    if 'usuario' not in request.session:
+        return redirect('login')
+    
+    if request.method == 'POST':
+        titulo = request.POST.get('titulo')
+        descricao = request.POST.get('descricao')
+        paginas = request.POST.get('paginas')
+        autor = request.POST.get('autor')
+        data_publicacao = request.POST.get('data_publicacao')
+        category_ids = request.POST.getlist('category') 
+        cover = request.FILES.get('cover')
+        
+        livro = Livro.objects.create(
+            titulo=titulo,
+            descricao=descricao,
+            paginas=paginas,
+            autor=autor,
+            data_publicacao=data_publicacao,
+            cover=cover,
+        )
+        
+        for category_id in category_ids:
+            category = get_object_or_404(Category, id=category_id)
+            livro.category.add(category)
+    
+    return render(request, 'livros/pages/cadastro_livro.html', {'categories': categories})
