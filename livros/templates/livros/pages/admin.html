@@ -1,0 +1,11 @@
+{% extends "global/home.html" %}
+
+{% block content %}
+<div class="menu">
+    <a href="{% url "cadastrar_livro" %}" class="botao-menu">Cadastrar livro</a>
+</div>
+
+{% include "livros/partials/tabela_livros.html" %}
+
+{% include "livros/partials/tabela_usuarios.html" %}
+{% endblock %}

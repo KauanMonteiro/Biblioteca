@@ -66,8 +66,7 @@ def search(request):
         return render(request, 'livros/pages/search_results.html', {'livros': livros, 'query': query})
     else:
         return redirect(reverse('home'))
-
-
+    
 def cadastrar_livro(request):
     categories = Category.objects.all()
     
@@ -97,3 +96,15 @@ def cadastrar_livro(request):
             livro.category.add(category)
     
     return render(request, 'livros/pages/cadastro_livro.html', {'categories': categories})
+
+def area_admin(request):
+    livros = Livro.objects.all()
+    usuario = Usuario.objects.all()
+    return render(request,'livros/pages/admin.html',{'livros':livros, 'usuario':usuario})
+
+def excluir_livro(request, livro_id):
+    livro = Livro.objects.get(pk = livro_id)
+
+    if request.method == 'POST':
+        livro.delete()
+        return redirect('area_admin')

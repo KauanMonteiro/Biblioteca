@@ -327,3 +327,32 @@ h1, h2, h3, h4, h5, h6 {
   text-align: center;
   color: #444;
 }
+.tabela table{
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 2rem;
+  margin-top: 25px;
+  overflow-x: auto;
+  overflow-y:auto;
+}
+.tabela th,td{
+  padding: 1rem;
+  text-align: left;
+}
+.tabela thead {
+  background-color: #001d63;
+  color: white;
+}
+.tabela tbody tr:nth-child(even) {
+  background-color: #f2f2f2;
+}
+
+.tabela tbody tr:hover {
+  background-color: #ddd;
+}
+.livro-descricao-tabela {
+  max-width: 300px; /* Define a largura máxima da célula da tabela, ajuste conforme necessário */
+  white-space: nowrap; /* Impede que o texto quebre em várias linhas */
+  overflow: hidden; /* Esconde o texto que exceder a largura máxima */
+  text-overflow: ellipsis; /* Adiciona reticências (...) ao final do texto cortado */
+}

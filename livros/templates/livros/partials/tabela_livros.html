@@ -1,0 +1,42 @@
+<div class="tabela">
+    <table>
+    <thead>
+    <tr>        
+        <th>Título</th>
+        <th>Descrição</th>
+        <th>Quantidade de páginas</th>
+        <th>Autor</th>
+        <th>Data de publicação</th>
+        <th>Emprestado</th>
+        <th>Data cadastro</th>
+        <th>Opções</th>
+    </tr>
+
+    </thead>
+    <tbody>
+        {% for livro in livros%}
+        <tr>
+            <td>{{livro.titulo}}</td>
+            <td class="livro-descricao-tabela">{{livro.descricao}}</td>
+            <td>{{livro.paginas}}</td>
+            <td>{{livro.autor}}</td>
+            <td>{{ livro.data_publicacao | date:"d/m/Y" }}</td>
+            {% if livro.emprestado_por %}
+            <td>{{livro.emprestado_por}}</td>
+            {% else %}
+            <td>Não foi emprestado</td>
+            {% endif %}
+            <td>{{livro.data_cadastro | date:"d/m/Y" }}</td>
+            <td>
+            <form action="{% url "excluir_livro" livro.id%}" method="POST">
+                {% csrf_token %}
+                <button type="submit"><i class="fas fa-trash"></i>Deletar</button>
+        </form>
+    </td>
+        </tr>
+        {% endfor %}
+
+    </tbody>
+</table>
+
+</div>
