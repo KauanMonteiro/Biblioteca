@@ -2,9 +2,15 @@
 {% block content %}
     <h2>Resultados da Busca para "{{ query }}"</h2>
     {% if livros %}
-        <ul>
+        
+    <main class="main-content-container">
+        <div class="main-content main-content-list container">
+            {% for livro in livros %}
             {% include "livros/partials/livros.html" %}
-        </ul>
+            {% endfor %}
+        </div>
+    </main>
+
     {% else %}
         <p>Nenhum resultado encontrado para "{{ query }}".</p>
     {% endif %}

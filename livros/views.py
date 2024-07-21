@@ -6,6 +6,7 @@ from django.shortcuts import redirect, get_object_or_404
 from django.urls import reverse
 from django.contrib.auth.decorators import login_required
 from usuario.models import Usuario
+
 def home(request):
     livros = Livro.objects.all()
     return render(request, 'livros/pages/home.html', context={'livros': livros})
@@ -36,11 +37,7 @@ def emprestar_livro(request, livro_id):
     livro = get_object_or_404(Livro, pk=livro_id)
     if not livro.emprestado:
         livro.emprestado = True
-        # Definindo a data de empréstimo como a data atual
         livro.data_emprestimo = datetime.now()
-        # Definindo a data de devolução como 7 dias após a data de empréstimo
-        livro.data_devolucao = livro.data_emprestimo + timedelta(days=7)
-        # Associando o livro ao usuário que está emprestando
         usuario_id = request.session['usuario']
         usuario = get_object_or_404(Usuario, pk=usuario_id)
         livro.emprestado_por = usuario

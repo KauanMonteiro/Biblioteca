@@ -1,4 +1,4 @@
-{% for livro in livros %}
+
 <div class="livro livro-list-item">
     <div class="livro-cover">
         <img src="{{ livro.cover.url }}" alt="Capa do Livro">
@@ -52,10 +52,13 @@
 
     <footer class="livro-footer">
         {% if not livro.emprestado %}
-            <a class="livro-read-more button button-dark button-full-width" href="{% url 'emprestar_livro' livro.id %}">
-                <i class="fas fa-handshake"></i>
-                <span>Emprestar</span>
-            </a>
+        {% if livro.id %}
+        <a class="livro-read-more button button-dark button-full-width" href="{% url 'emprestar_livro' livro.id %}">
+            <i class="fas fa-handshake"></i>
+            <span>Emprestar</span>
+        </a>
+    {% endif %}
+    
         {% else %}
             {% if livro.emprestado_por_id != request.session.usuario %}
                 <a class="livro-read-more button button-dark button-full-width" href="#">
@@ -72,4 +75,3 @@
     
     
 </div>
-{% endfor %}

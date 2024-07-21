@@ -3,11 +3,15 @@
 <body>
     {% include "livros/partials/header.html" %}
     {% include "livros/partials/search.html" %}
+    
     <main class="main-content-container">
         <div class="main-content main-content-list container">
+            {% for livro in livros %}
             {% include "livros/partials/livros.html" %}
+            {% endfor %}
         </div>
     </main>
+
 </body>
 {% include "livros/partials/footer.html" %}
 </html>

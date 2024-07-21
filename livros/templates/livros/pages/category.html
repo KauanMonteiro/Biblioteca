@@ -8,7 +8,9 @@
 <body>
     <main class="main-content-container">
         <div class="main-content main-content-list container">
+            {% for livro in livros %}
             {% include "livros/partials/livros.html" %}
+            {% endfor %}
         </div>
     </main>
     {% include "livros/partials/footer.html" %}
