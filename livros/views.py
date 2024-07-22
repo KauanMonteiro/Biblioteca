@@ -8,15 +8,24 @@ from django.contrib.auth.decorators import login_required
 from usuario.models import Usuario
 
 def home(request):
+    if 'usuario' not in request.session:
+        return redirect('login')
+    
+    usuario_id = request.session.get('usuario')
+    usuario = get_object_or_404(Usuario, pk=usuario_id)
     livros = Livro.objects.all()
-    return render(request, 'livros/pages/home.html', context={'livros': livros})
+    return render(request, 'livros/pages/home.html', context={'livros': livros, 'usuario':usuario})
 
 def category(request, category_id):
+    if 'usuario' not in request.session:
+        return redirect('login')
     categoria = Category.objects.get(pk=category_id)
     livros = Livro.objects.filter(category=categoria)
     return render(request, 'livros/pages/category.html', context={'livros': livros})
 
 def livros_por_categoria(request, categoria_id):
+    if 'usuario' not in request.session:
+        return redirect('login')
     categoria = Category.objects.get(pk=categoria_id)
     livros = Livro.objects.filter(category=categoria)
     return render(request, 'livros/pages/livros_por_categoria.html', {'livros': livros, 'categoria': categoria})
@@ -69,38 +78,50 @@ def search(request):
     
 def cadastrar_livro(request):
     categories = Category.objects.all()
-    
+
     if 'usuario' not in request.session:
         return redirect('login')
     
-    if request.method == 'POST':
-        titulo = request.POST.get('titulo')
-        descricao = request.POST.get('descricao')
-        paginas = request.POST.get('paginas')
-        autor = request.POST.get('autor')
-        data_publicacao = request.POST.get('data_publicacao')
-        category_ids = request.POST.getlist('category') 
-        cover = request.FILES.get('cover')
+    usuario_id = request.session.get('usuario')
+    usuario = get_object_or_404(Usuario, pk=usuario_id)
+
+    if usuario.cargo == 'Admin':
+        if request.method == 'POST':
+            titulo = request.POST.get('titulo')
+            descricao = request.POST.get('descricao')
+            paginas = request.POST.get('paginas')
+            autor = request.POST.get('autor')
+            data_publicacao = request.POST.get('data_publicacao')
+            category_ids = request.POST.getlist('category') 
+            cover = request.FILES.get('cover')
+            
+            livro = Livro.objects.create(
+                titulo=titulo,
+                descricao=descricao,
+                paginas=paginas,
+                autor=autor,
+                data_publicacao=data_publicacao,
+                cover=cover,
+            )
+            
+            for category_id in category_ids:
+                category = get_object_or_404(Category, id=category_id)
+                livro.category.add(category)
         
-        livro = Livro.objects.create(
-            titulo=titulo,
-            descricao=descricao,
-            paginas=paginas,
-            autor=autor,
-            data_publicacao=data_publicacao,
-            cover=cover,
-        )
-        
-        for category_id in category_ids:
-            category = get_object_or_404(Category, id=category_id)
-            livro.category.add(category)
-    
-    return render(request, 'livros/pages/cadastro_livro.html', {'categories': categories})
+        return render(request, 'livros/pages/cadastro_livro.html', {'categories': categories})
 
 def area_admin(request):
-    livros = Livro.objects.all()
-    usuario = Usuario.objects.all()
-    return render(request,'livros/pages/admin.html',{'livros':livros, 'usuario':usuario})
+    if 'usuario' not in request.session:
+        return redirect('login')
+    
+    usuario_id = request.session.get('usuario')
+    usuario = get_object_or_404(Usuario, pk=usuario_id)
+
+    if usuario.cargo == 'Admin':
+        livros = Livro.objects.all()
+        usuarios = Usuario.objects.all()
+        return render(request,'livros/pages/admin.html',{'livros':livros, 'usuario':usuarios})
+    
 
 def excluir_livro(request, livro_id):
     livro = Livro.objects.get(pk = livro_id)
