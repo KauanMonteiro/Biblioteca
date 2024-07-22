@@ -1,0 +1,54 @@
+<div class="tabela">
+    <h1>Tabela de Usuários</h1>
+    <table id="tabela-usuario" class="tabela-custom2">
+        <thead>
+            <tr>
+                <th>Nome</th>
+                <th>Email</th>
+                <th>Opções</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for usuario in usuario %}
+            <tr>
+                <td>{{usuario.nome}}</td>
+                <td>{{usuario.email}}</td>
+                <td><form action="{% url "excluir_usuario" usuario.id%}" method="POST">
+                {% csrf_token %}
+                <button type="submit" class="botao2"><i class="fas fa-trash"></i>Deletar</button>
+        </form></td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    <button class="ver-mais-btn2 botao2">Ver Mais</button>
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const verMaisBtn2 = document.querySelector('.ver-mais-btn2');
+        const linhasVisiveis = 3;
+        const tabelaUsuario = document.querySelectorAll('.tabela-custom2 tbody tr');
+
+        if (tabelaUsuario.length > linhasVisiveis) {
+            for (let i = linhasVisiveis; i < tabelaUsuario.length; i++) {
+                tabelaUsuario[i].style.display = 'none';
+            }
+
+            verMaisBtn2.addEventListener('click', function () {
+                let allHidden = true;
+                for (let i = linhasVisiveis; i < tabelaUsuario.length; i++) {
+                    if (tabelaUsuario[i].style.display === 'none') {
+                        tabelaUsuario[i].style.display = 'table-row';
+                        allHidden = false;
+                    } else {
+                        tabelaUsuario[i].style.display = 'none';
+                    }
+                }
+                verMaisBtn2.textContent = allHidden ? 'Ver Mais' : 'Ver Menos';
+            });
+        } else {
+            verMaisBtn2.style.display = 'none';
+        }
+    });
+</script>

@@ -334,6 +334,7 @@ h1, h2, h3, h4, h5, h6 {
   margin-top: 25px;
   overflow-x: auto;
   overflow-y:auto;
+  margin-top: 5rem;
 }
 .tabela th,td{
   padding: 1rem;
@@ -351,8 +352,52 @@ h1, h2, h3, h4, h5, h6 {
   background-color: #ddd;
 }
 .livro-descricao-tabela {
-  max-width: 300px; /* Define a largura máxima da célula da tabela, ajuste conforme necessário */
-  white-space: nowrap; /* Impede que o texto quebre em várias linhas */
-  overflow: hidden; /* Esconde o texto que exceder a largura máxima */
-  text-overflow: ellipsis; /* Adiciona reticências (...) ao final do texto cortado */
+  max-width: 300px; 
+  white-space: nowrap; 
+  overflow: hidden; 
+  text-overflow: ellipsis; 
+}
+
+.botao{
+  display: flex;
+  padding: 5px 5px;
+  font-size: 1.6rem; 
+  font-weight: bold;
+  text-align: center;
+  margin: 0 auto;
+  background-color: #001d63;
+  color: #ffffff;
+  border: 2px solid transparent; 
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s, color 0.3s, border-color 0.3s;
+  margin-top: 2rem;
+  width: 13rem;
+  text-decoration: none;
+}
+.botao:hover{
+  background-color: #0039ac;
+}
+
+.botao2 {
+  display: flex;
+  padding: 10px 20px;
+  font-size: 1.6rem; 
+  font-weight: bold;
+  text-align: center;
+  text-align: center;
+  text-decoration: none;
+  background-color: transparent;
+  color: #444; 
+  border: 2px solid transparent; 
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s, color 0.3s, border-color 0.3s;
+  margin: 0 auto;
+}
+
+.botao2:hover {
+  background-color: #ccc;
+  color: #000;
+  border-color: #ccc;
 }

@@ -1,5 +1,6 @@
 <div class="tabela">
-    <table>
+    <table id="tabela-livros" class="tabela-custom">
+        <h1>Tabela de livros</h1>
     <thead>
     <tr>        
         <th>Título</th>
@@ -30,7 +31,7 @@
             <td>
             <form action="{% url "excluir_livro" livro.id%}" method="POST">
                 {% csrf_token %}
-                <button type="submit"><i class="fas fa-trash"></i>Deletar</button>
+                <button type="submit" class="botao2"><i class="fas fa-trash"></i>Deletar</button>
         </form>
     </td>
         </tr>
@@ -38,5 +39,33 @@
 
     </tbody>
 </table>
-
+<button class="ver-mais-btn botao2">Ver Mais</button>
 </div>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const verMaisBtn = document.querySelector('.ver-mais-btn');
+        const linhasVisiveis = 3;
+        const tabelaLivros = document.querySelectorAll('.tabela-custom tbody tr');
+      
+        if (tabelaLivros.length > linhasVisiveis) {
+            for (let i = linhasVisiveis; i < tabelaLivros.length; i++) {
+                tabelaLivros[i].style.display = 'none';
+            }
+      
+            verMaisBtn.addEventListener('click', function() {
+                let allHidden = true;
+                for (let i = linhasVisiveis; i < tabelaLivros.length; i++) {
+                    if (tabelaLivros[i].style.display === 'none') {
+                        tabelaLivros[i].style.display = 'table-row';
+                        allHidden = false;
+                    } else {
+                        tabelaLivros[i].style.display = 'none';
+                    }
+                }
+                verMaisBtn.textContent = allHidden ? 'Ver Mais' : 'Ver Menos';
+            });
+        } else {
+            verMaisBtn.style.display = 'none';
+        }
+    });
+</script>

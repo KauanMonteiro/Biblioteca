@@ -108,3 +108,11 @@ def excluir_livro(request, livro_id):
     if request.method == 'POST':
         livro.delete()
         return redirect('area_admin')
+    
+def excluir_usuario(request, usuario_id):
+    usuario = Usuario.objects.get(pk = usuario_id)
+
+    if request.method == 'POST':
+        usuario.delete()
+        return redirect('area_admin')
+    

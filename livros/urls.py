@@ -11,6 +11,6 @@ urlpatterns = [
     path('search/', views.search, name='search'),
     path('area_admin/',views.area_admin, name='area_admin'),
     path('cadastro_livro/', views.cadastrar_livro, name="cadastrar_livro"),
-    path('deletar_livro/<int:livro_id>/', views.excluir_livro, name='excluir_livro')
-
+    path('deletar_livro/<int:livro_id>/', views.excluir_livro, name='excluir_livro'),
+    path('deletar_usuario/<int:usuario_id>/', views.excluir_usuario, name='excluir_usuario')
 ]
