@@ -1,58 +1,59 @@
 <div class="tabela">
     <table id="tabela-livros" class="tabela-custom">
         <h1>Tabela de livros</h1>
-    <thead>
-    <tr>        
-        <th>Título</th>
-        <th>Descrição</th>
-        <th>Quantidade de páginas</th>
-        <th>Autor</th>
-        <th>Data de publicação</th>
-        <th>Emprestado</th>
-        <th>Data cadastro</th>
-        <th>Opções</th>
-    </tr>
+        <thead>
+            <tr>
+                <th>Título</th>
+                <th>Descrição</th>
+                <th>Quantidade de páginas</th>
+                <th>Autor</th>
+                <th>Data de publicação</th>
+                <th>Emprestado</th>
+                <th>Data cadastro</th>
+                <th>Opções</th>
+            </tr>
 
-    </thead>
-    <tbody>
-        {% for livro in livros%}
-        <tr>
-            <td>{{livro.titulo}}</td>
-            <td class="livro-descricao-tabela">{{livro.descricao}}</td>
-            <td>{{livro.paginas}}</td>
-            <td>{{livro.autor}}</td>
-            <td>{{ livro.data_publicacao | date:"d/m/Y" }}</td>
-            {% if livro.emprestado_por %}
-            <td>{{livro.emprestado_por}}</td>
-            {% else %}
-            <td>Não foi emprestado</td>
-            {% endif %}
-            <td>{{livro.data_cadastro | date:"d/m/Y" }}</td>
-            <td>
-            <form action="{% url "excluir_livro" livro.id%}" method="POST">
-                {% csrf_token %}
-                <button type="submit" class="botao2"><i class="fas fa-trash"></i>Deletar</button>
-        </form>
-    </td>
-        </tr>
-        {% endfor %}
+        </thead>
+        <tbody>
+            {% for livro in livros%}
+            <tr>
+                <td>{{livro.titulo}}</td>
+                <td class="livro-descricao-tabela">{{livro.descricao}}</td>
+                <td>{{livro.paginas}}</td>
+                <td>{{livro.autor}}</td>
+                <td>{{ livro.data_publicacao | date:"d/m/Y" }}</td>
+                {% if livro.emprestado_por %}
+                <td>{{livro.emprestado_por}}</td>
+                {% else %}
+                <td>Não foi emprestado</td>
+                {% endif %}
+                <td>{{livro.data_cadastro | date:"d/m/Y" }}</td>
+                <td>
+                    <a href="{% url 'editar_livro' livro.id %}" class="botao2"> <i class="fas fa-edit"></i>Editar</a>
+                    <form action="{% url "excluir_livro" livro.id%}" method="POST">
+                        {% csrf_token %}
+                        <button type="submit" class="botao2"><i class="fas fa-trash"></i>Deletar</button>
+                    </form>
+                </td>
+            </tr>
+            {% endfor %}
 
-    </tbody>
-</table>
-<button class="ver-mais-btn botao2">Ver Mais</button>
+        </tbody>
+    </table>
+    <button class="ver-mais-btn botao2">Ver Mais</button>
 </div>
 <script>
-    document.addEventListener('DOMContentLoaded', function() {
+    document.addEventListener('DOMContentLoaded', function () {
         const verMaisBtn = document.querySelector('.ver-mais-btn');
         const linhasVisiveis = 3;
         const tabelaLivros = document.querySelectorAll('.tabela-custom tbody tr');
-      
+
         if (tabelaLivros.length > linhasVisiveis) {
             for (let i = linhasVisiveis; i < tabelaLivros.length; i++) {
                 tabelaLivros[i].style.display = 'none';
             }
-      
-            verMaisBtn.addEventListener('click', function() {
+
+            verMaisBtn.addEventListener('click', function () {
                 let allHidden = true;
                 for (let i = linhasVisiveis; i < tabelaLivros.length; i++) {
                     if (tabelaLivros[i].style.display === 'none') {

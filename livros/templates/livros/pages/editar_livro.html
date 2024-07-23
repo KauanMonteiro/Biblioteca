@@ -1,0 +1,42 @@
+{% include "livros/partials/head.html" %}
+
+<div class="formulario">
+    <h1>Edição do livro</h1>
+    <form action="" method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
+
+        <label for="titulo">Título</label>
+        <input type="text" id="titulo" name="titulo" value="{{ livro.titulo }}" required>
+
+        <label for="descricao">Descrição</label>
+        <input type="text" id="descricao" name="descricao" value="{{ livro.descricao }}" required>
+
+        {% if livro.cover %}
+            <div class="imagem-atual">
+                <label for="cover">Capa atual:</label>
+                <img src="{{ livro.cover.url }}" alt="Capa do livro" style="max-width: 200px; max-height: 200px;">
+            </div>
+        {% endif %}
+
+        <label for="cover">Nova capa (deixe em branco para manter a atual):</label>
+        <input type="file" name="cover" id="cover">
+
+        <label for="paginas">Quantidade de páginas</label>
+        <input type="number" name="paginas" id="paginas" value="{{ livro.paginas }}" required>
+
+        <label for="autor">Autor</label>
+        <input type="text" id="autor" name="autor" value="{{ livro.autor }}" required>
+
+        <label for="data_publicacao">Data de publicação</label>
+        <input type="date" name="data_publicacao" id="data_publicacao" value="{{ livro.data_publicacao|date:'Y-m-d' }}" required>
+
+        <label for="category">Categorias</label>
+        <select name="category" id="category" multiple>
+            {% for category in categories %}
+                <option value="{{ category.id }}">{{ category.name }}</option>
+            {% endfor %}
+        </select>
+
+        <button type="submit">Salvar</button>
+    </form>
+</div>

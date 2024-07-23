@@ -122,7 +122,6 @@ def area_admin(request):
         usuarios = Usuario.objects.all()
         return render(request,'livros/pages/admin.html',{'livros':livros, 'usuario':usuarios})
     
-
 def excluir_livro(request, livro_id):
     livro = Livro.objects.get(pk = livro_id)
 
@@ -136,4 +135,34 @@ def excluir_usuario(request, usuario_id):
     if request.method == 'POST':
         usuario.delete()
         return redirect('area_admin')
+
+def editar_livro(request, livro_id):
+    livro = get_object_or_404(Livro, id=livro_id)
+
+    if request.method == 'POST':
+        titulo = request.POST.get('titulo')
+        descricao = request.POST.get('descricao')
+        paginas = request.POST.get('paginas')
+        autor = request.POST.get('autor')
+        data_publicacao = request.POST.get('data_publicacao')
+        category_ids = request.POST.getlist('category')
+        cover = request.FILES.get('cover')
+
+        livro.titulo = titulo
+        livro.descricao = descricao
+        livro.paginas = paginas
+        livro.autor = autor
+        livro.data_publicacao = data_publicacao
+        livro.cover = cover
+
+        livro.category.set(Category.objects.filter(id__in=category_ids))
+
+        livro.save()
+        return redirect('home')
+
+    categories = Category.objects.all()
     
+    return render(request, 'livros/pages/editar_livro.html', {
+        'livro': livro,
+        'categories': categories
+    })
