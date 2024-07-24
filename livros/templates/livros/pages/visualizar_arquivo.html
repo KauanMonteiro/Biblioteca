@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ livro.titulo }}</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f9f9f9; /* Fundo geral da página */
+        }
+        .book-page {
+            background-color: #fff; /* Fundo da área do livro */
+            padding: 20px;
+            margin-bottom: 20px;
+            border: 1px solid #ccc;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        .book-title {
+            font-size: 28px; /* Título do livro */
+            margin-bottom: 15px;
+            text-align: center; /* Centralizar o título */
+        }
+        .book-content {
+            font-size: 18px; /* Conteúdo do livro */
+            line-height: 1.8; /* Espaçamento entre linhas */
+        }
+        .book-footer {
+            margin-top: 20px;
+            text-align: center;
+            font-size: 14px; /* Rodapé do livro */
+            color: #666;
+        }
+        .book-footer p {
+            margin-bottom: 5px; /* Espaçamento entre parágrafos do rodapé */
+        }
+        pre {
+            white-space: pre-wrap; /* Permite que o texto quebre linha automaticamente */
+            font-family: Arial, sans-serif; /* Garante que o texto dentro de <pre> seja legível */
+            font-size: inherit;
+            line-height: inherit;
+            margin-bottom: 15px; /* Espaçamento após o conteúdo do livro */
+        }
+        pre code {
+            display: block; /* Força o <code> dentro de <pre> a ser exibido em bloco */
+            padding: 10px; /* Espaçamento interno para código */
+            background-color: #f5f5f5; /* Fundo do código */
+            border: 1px solid #ccc; /* Borda do código */
+            overflow-x: auto; /* Barra de rolagem horizontal se necessário */
+            font-family: Consolas, monospace; /* Fonte para código */
+        }
+    </style>
+    
+</head>
+<body>
+    <div class="book-page">
+        <h1 class="book-title">{{ livro.titulo }}</h1>
+        <div class="book-content">
+            {% if tipo_arquivo == 'word' %}
+                <iframe src="https://view.officeapps.live.com/op/embed.aspx?src={{ url_arquivo }}" width="100%" height="600px" frameborder="0">Este navegador não suporta a visualização de documentos do Word.</iframe>
+                {% elif tipo_arquivo == 'txt' %}
+                <pre>
+                    {% if file_content %}
+                        {{ file_content|linebreaks }}
+                    {% else %}
+                        <p>Arquivo não encontrado ou vazio.</p>
+                    {% endif %}
+                </pre>
+            
+            {% endif %}
+        </div>
+        <div class="book-footer">
+            <p>Autor: {{ livro.autor }}</p>
+            <p>Data de Publicação: {{ livro.data_publicacao }}</p>
+            <p>Descrição: {{ livro.descricao }}</p>
+        </div>
+    </div>
+</body>
+</html>

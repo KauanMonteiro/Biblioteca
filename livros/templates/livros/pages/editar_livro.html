@@ -18,9 +18,13 @@
             </div>
         {% endif %}
 
+        
+
         <label for="cover">Nova capa (deixe em branco para manter a atual):</label>
         <input type="file" name="cover" id="cover">
-
+<label for="arquivo">Arquivo do livro (deixe em branco para manter a atual):</label>
+        <input type="file" id="arquivo" name="arquivo" accept=".pdf,.txt,.doc,.docx" >
+        
         <label for="paginas">Quantidade de páginas</label>
         <input type="number" name="paginas" id="paginas" value="{{ livro.paginas }}" required>
 

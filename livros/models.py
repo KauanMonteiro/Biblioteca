@@ -11,6 +11,7 @@ class Category(models.Model):
 
 class Livro(models.Model):
     titulo = models.CharField(max_length=65)
+    arquivo_livro = models.FileField(upload_to='livros/arquivos/%Y/%m/%d/',null=True, blank=True)
     descricao = models.CharField(max_length=200, null=True, blank=True)
     paginas = models.IntegerField(null=True, blank=True)
     autor = models.CharField(max_length=50, null=True, blank=True)

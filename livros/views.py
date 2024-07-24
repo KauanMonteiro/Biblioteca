@@ -1,11 +1,14 @@
 from django.shortcuts import render
-from django.http import HttpResponse
+from django.http import HttpResponse, FileResponse
 from livros.models import Livro, Category
 from datetime import datetime, timedelta
 from django.shortcuts import redirect, get_object_or_404
 from django.urls import reverse
 from django.contrib.auth.decorators import login_required
 from usuario.models import Usuario
+from django.template import loader
+from django.conf import settings
+import mimetypes
 
 def home(request):
     if 'usuario' not in request.session:
@@ -94,6 +97,7 @@ def cadastrar_livro(request):
             data_publicacao = request.POST.get('data_publicacao')
             category_ids = request.POST.getlist('category') 
             cover = request.FILES.get('cover')
+            arquivo = request.FILES.get('arquivo')
             
             livro = Livro.objects.create(
                 titulo=titulo,
@@ -102,6 +106,7 @@ def cadastrar_livro(request):
                 autor=autor,
                 data_publicacao=data_publicacao,
                 cover=cover,
+                arquivo_livro = arquivo
             )
             
             for category_id in category_ids:
@@ -147,13 +152,19 @@ def editar_livro(request, livro_id):
         data_publicacao = request.POST.get('data_publicacao')
         category_ids = request.POST.getlist('category')
         cover = request.FILES.get('cover')
+        arquivo = request.FILES.get('arquivo')
 
+        if cover:
+            livro.cover = cover
+
+        if arquivo:
+            livro.arquivo_livro = arquivo
+         
         livro.titulo = titulo
         livro.descricao = descricao
         livro.paginas = paginas
         livro.autor = autor
         livro.data_publicacao = data_publicacao
-        livro.cover = cover
 
         livro.category.set(Category.objects.filter(id__in=category_ids))
 
@@ -166,3 +177,34 @@ def editar_livro(request, livro_id):
         'livro': livro,
         'categories': categories
     })
+
+def visualizar_arquivo(request, livro_id):
+    livro = get_object_or_404(Livro, id=livro_id)
+    tipo_arquivo = livro.arquivo_livro.name.split('.')[-1]  # Obtém a extensão do arquivo
+
+    if tipo_arquivo == 'pdf':
+        file_path = livro.arquivo_livro.path
+        filename = livro.arquivo_livro.name.split('/')[-1]
+        response = FileResponse(open(file_path, 'rb'), content_type='application/pdf')
+        response['Content-Disposition'] = f'inline; filename="{filename}"'
+        return response
+    elif tipo_arquivo == 'txt':
+        url_arquivo = settings.MEDIA_URL + livro.arquivo_livro.name
+        file_path = livro.arquivo_livro.path
+
+        try:
+            with open(file_path, 'r', encoding='utf-8') as file:
+                file_content = file.read()
+        except IOError:
+            file_content = None  # Tratar o caso em que não é possível ler o arquivo
+
+        context = {
+            'livro': livro,
+            'tipo_arquivo': tipo_arquivo,
+            'url_arquivo': url_arquivo,
+            'file_content': file_content
+        }
+        return render(request, 'livros/pages/visualizar_arquivo.html', context)
+
+    else:
+        return HttpResponse('<p>Visualização não suportada para este tipo de arquivo.</p>')

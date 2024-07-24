@@ -1,6 +1,6 @@
 
 <div class="livro livro-list-item">
-    {% if livro.cover.url %}
+    {% if livro.cover and livro.cover.url %}
     <div class="livro-cover">
         <img src="{{ livro.cover.url }}" alt="Capa do Livro">
     </div>
@@ -71,6 +71,7 @@
                     <i class="fas fa-undo"></i>
                     <span>Devolver</span>
                 </a>
+                <a href="{% url "visualizar_arquivo" livro.id %}">ler</a>
             {% endif %}
         {% endif %}
     </footer>

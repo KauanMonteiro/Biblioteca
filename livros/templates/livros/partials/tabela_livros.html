@@ -1,8 +1,9 @@
 <div class="tabela">
-    <table id="tabela-livros" class="tabela-custom">
+    <table id="tabela-livros" class="tabela-custom" border=1>
         <h1>Tabela de livros</h1>
         <thead>
             <tr>
+                <th>Capa</th>
                 <th>Título</th>
                 <th>Descrição</th>
                 <th>Quantidade de páginas</th>
@@ -17,6 +18,9 @@
         <tbody>
             {% for livro in livros%}
             <tr>
+                {% if livro.cover and livro.cover.url %}
+                <td><img src="{{ livro.cover.url }}" alt="Capa do livro" style="max-width: 200px; max-height: 200px;"></td>
+                {% endif %}
                 <td>{{livro.titulo}}</td>
                 <td class="livro-descricao-tabela">{{livro.descricao}}</td>
                 <td>{{livro.paginas}}</td>
