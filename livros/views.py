@@ -9,6 +9,7 @@ from usuario.models import Usuario
 from django.template import loader
 from django.conf import settings
 import mimetypes
+import os
 
 def home(request):
     if 'usuario' not in request.session:
@@ -178,16 +179,20 @@ def editar_livro(request, livro_id):
         'categories': categories
     })
 
+from docx import Document
+import os
+
 def visualizar_arquivo(request, livro_id):
     livro = get_object_or_404(Livro, id=livro_id)
     tipo_arquivo = livro.arquivo_livro.name.split('.')[-1]  # Obtém a extensão do arquivo
 
     if tipo_arquivo == 'pdf':
         file_path = livro.arquivo_livro.path
-        filename = livro.arquivo_livro.name.split('/')[-1]
+        filename = os.path.basename(livro.arquivo_livro.name)
         response = FileResponse(open(file_path, 'rb'), content_type='application/pdf')
         response['Content-Disposition'] = f'inline; filename="{filename}"'
         return response
+
     elif tipo_arquivo == 'txt':
         url_arquivo = settings.MEDIA_URL + livro.arquivo_livro.name
         file_path = livro.arquivo_livro.path
@@ -203,6 +208,26 @@ def visualizar_arquivo(request, livro_id):
             'tipo_arquivo': tipo_arquivo,
             'url_arquivo': url_arquivo,
             'file_content': file_content
+        }
+        return render(request, 'livros/pages/visualizar_arquivo.html', context)
+
+    elif tipo_arquivo == 'docx':
+        url_arquivo = settings.MEDIA_URL + livro.arquivo_livro.name
+        file_path = livro.arquivo_livro.path
+
+        try:
+            doc = Document(file_path)
+            doc_content = ""
+            for para in doc.paragraphs:
+                doc_content += para.text + "\n"
+        except IOError:
+            doc_content = None  # Tratar o caso em que não é possível ler o arquivo
+
+        context = {
+            'livro': livro,
+            'tipo_arquivo': tipo_arquivo,
+            'url_arquivo': url_arquivo,
+            'doc_content': doc_content
         }
         return render(request, 'livros/pages/visualizar_arquivo.html', context)
 

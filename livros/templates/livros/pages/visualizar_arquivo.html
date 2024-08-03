@@ -55,15 +55,14 @@
             font-family: Consolas, monospace; /* Fonte para código */
         }
     </style>
-    
 </head>
 <body>
     <div class="book-page">
         <h1 class="book-title">{{ livro.titulo }}</h1>
         <div class="book-content">
-            {% if tipo_arquivo == 'word' %}
-                <iframe src="https://view.officeapps.live.com/op/embed.aspx?src={{ url_arquivo }}" width="100%" height="600px" frameborder="0">Este navegador não suporta a visualização de documentos do Word.</iframe>
-                {% elif tipo_arquivo == 'txt' %}
+            {% if tipo_arquivo == 'pdf' %}
+                <iframe src="{{ url_arquivo }}" width="100%" height="600px" frameborder="0">Este navegador não suporta a visualização de PDF.</iframe>
+            {% elif tipo_arquivo == 'txt' %}
                 <pre>
                     {% if file_content %}
                         {{ file_content|linebreaks }}
@@ -71,7 +70,16 @@
                         <p>Arquivo não encontrado ou vazio.</p>
                     {% endif %}
                 </pre>
-            
+            {% elif tipo_arquivo == 'docx' %}
+                <pre>
+                    {% if doc_content %}
+                        {{ doc_content|linebreaks }}
+                    {% else %}
+                        <p>Arquivo não encontrado ou vazio.</p>
+                    {% endif %}
+                </pre>
+            {% else %}
+                <p>Visualização não suportada para este tipo de arquivo.</p>
             {% endif %}
         </div>
         <div class="book-footer">
