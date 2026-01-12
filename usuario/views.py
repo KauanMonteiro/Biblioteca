@@ -2,7 +2,8 @@ from django.shortcuts import render, redirect
 from django.urls import reverse
 from .models import Usuario
 from hashlib import sha256
-
+from .forms import CadastroForm
+from django.contrib import messages
 def login(request):
     if request.session.get('usuario'):
         return redirect('/')
@@ -10,10 +11,18 @@ def login(request):
     return render(request, 'login.html', {'status': status})
 
 def cadastro(request):
-    if request.session.get('usuario'):
-        return redirect('/')
-    status = request.GET.get('status')
-    return render(request, 'cadastro.html', {'status': status})
+    if request.method == 'POST':
+        form = CadastroForm(request.POST)
+        if form.is_valid():
+            user = form.save(commit=False)
+            user.set_password(form.cleaned_data['password']) 
+            user.save()
+            return redirect('reclamacoes:home')
+        else:
+            messages.error(request, 'Por favor, corrija os erros abaixo.')
+    else:
+        form = CadastroForm()
+    return render(request, 'cadastro.html', {'form': form})
 
 def valida_cadastro(request):
     if request.method == 'POST':

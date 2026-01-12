@@ -14,5 +14,4 @@ urlpatterns = [
     path('deletar_livro/<int:livro_id>/', views.excluir_livro, name='excluir_livro'),
     path('deletar_usuario/<int:usuario_id>/', views.excluir_usuario, name='excluir_usuario'),
     path('editar_livro/<int:livro_id>/', views.editar_livro, name='editar_livro'),
-    path('visualizar_livro/<int:livro_id>/', views.visualizar_arquivo,name='visualizar_arquivo')
 ]

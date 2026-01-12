@@ -22,6 +22,7 @@ class Livro(models.Model):
     category = models.ManyToManyField(Category)
     cover = models.ImageField(upload_to='livros/covers/%Y/%m/%d/')
     emprestado_por = models.ForeignKey(Usuario, on_delete=models.SET_NULL, null=True, blank=True)
+    deletado = models.BooleanField(default=False)
 
     def __str__(self):
         return f"{self.titulo} - {self.autor}" 

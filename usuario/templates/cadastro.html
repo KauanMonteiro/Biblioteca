@@ -8,40 +8,43 @@
     <title>Cadastro</title>
 </head>
 <body>
-    <div class="container">
-        <h2>Cadastro</h2>
-        {% if status %}
-            <div class="alert {% if status == '0' %}alert-success{% else %}alert-danger{% endif %}" role="alert">
-                {% if status == '0' %}
-                    Cadastro realizado com sucesso
-                {% elif status == '1' %}
-                    Nome e email não podem estar vazios.
-                {% elif status == '2' %}
-                    Sua senha deve ter pelo menos 8 caracteres
-                {% elif status == '3' %}
-                    Usuário já existe no sistema
-                {% elif status == '4' %}
-                    Erro interno do sistema
-                {% endif %}
-            </div>
-        {% endif %}
-        <form method="POST" action="{% url 'valida_cadastro' %}" >
-            {% csrf_token %}
-            <div class="form-group">
-                <label for="nome">Nome:</label>
-                <input type="text" id="nome" name="nome" required>
-            </div>
-            <div class="form-group">
-                <label for="email">Email:</label>
-                <input type="email" id="email" name="email" required>
-            </div>
-            <div class="form-group">
-                <label for="senha">Senha:</label>
-                <input type="password" id="senha" name="senha" required>
-            </div>
-            <input type="submit" value="Cadastrar">
-        </form>
-        <p>Já possui uma conta? <a href="{% url 'login' %}">Faça login aqui</a>.</p>
+<form method="POST" class="formulario container" action="{% url "cadastro" %}">
+    {% csrf_token %}
+
+    <h1 class="titulo-form">Cadastro de Usuário</h1>
+
+    {% if form.non_field_errors %}
+        <div class="alert-box">
+            {{ form.non_field_errors }}
+        </div>
+    {% endif %}
+
+    {% for field in form %}
+        <div class="form-group">
+            <label for="{{ field.id_for_label }}" class="form-label">
+                {{ field.label }}
+            </label>
+
+            {{ field }}
+
+            {% if field.errors %}
+                <div class="alert-box">
+                    {{ field.errors }}
+                </div>
+            {% endif %}
+        </div>
+    {% endfor %}
+
+    <div class="form-actions">
+        <button type="submit" class="btn btn-primary">
+            Cadastrar
+        </button>
     </div>
+
+    <div class="login-link">
+        Já tem conta?
+        <a href="">Entrar</a>
+    </div>
+</form>
 </body>
 </html>
