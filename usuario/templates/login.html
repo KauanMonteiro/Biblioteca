@@ -5,38 +5,40 @@
     <link rel="stylesheet" href="{% static 'usuario/css/style_usuario.css' %}">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login</title>
+    <title>Cadastro</title>
 </head>
 <body>
-    <div class="container">
-        <h2>Login</h2>
+<form method="POST" class="formulario container" action="{% url "login" %}">
+    {% csrf_token %}
 
-        {% if status == '1' %}
-        <div class="alert alert-danger" role="alert">
-            Email ou senha inválidos
+    <h1 class="titulo-form">Login de Usuário</h1>
+    {% if form.non_field_errors %}
+        <div class="alert-box">
+            {{ form.non_field_errors }}
         </div>
-        {% endif %}
+    {% endif %}
 
-        {% if status == '2' %}
-        <div class="alert alert-danger" role="alert">
-            Faça login antes de tentar acessar o sistema
+    {% for field in form %}
+        <div class="form-group">
+            <label for="{{ field.id_for_label }}" class="form-label">
+                {{ field.label }}
+            </label>
+
+            {{ field }}
+
+            {% if field.errors %}
+                <div class="alert-box">
+                    {{ field.errors }}
+                </div>
+            {% endif %}
         </div>
-        {% endif %}
+    {% endfor %}
 
-        <form method="POST" action="{% url 'validar_login' %}">
-            {% csrf_token %}
-            <div class="form-group">
-                <input name="email" class="form-control" type="text" placeholder="Email...">
-            </div>
-            <div class="form-group">
-                <input name="senha" class="form-control" type="password" placeholder="Senha...">
-            </div>
-            <input class="btn btn-info btn-lg" type="submit" value="Enviar">
-        </form>
-
-        <!-- Fim do conteúdo específico da página -->
-
-        <p>Não tem uma conta? <a href="{% url 'cadastro' %}">Cadastre-se aqui</a>.</p>
+    <div class="form-actions">
+        <button type="submit" class="btn btn-primary">
+            Entrar
+        </button>
     </div>
+</form>
 </body>
 </html>
