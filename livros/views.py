@@ -124,22 +124,22 @@ def area_admin(request):
     usuario = get_object_or_404(Usuario, pk=usuario_id)
 
     if usuario.cargo == 'Admin':
-        livros = Livro.objects.all()
-        usuarios = Usuario.objects.all()
+        livros = Livro.objects.all().exclude(deletado = True)
+        usuarios = Usuario.objects.all().exclude(ativo = False)
         return render(request,'livros/pages/admin.html',{'livros':livros, 'usuario':usuarios})
     
 def excluir_livro(request, livro_id):
     livro = Livro.objects.get(pk = livro_id)
 
     if request.method == 'POST':
-        livro.delete()
+        livro.deletado = True
         return redirect('area_admin')
     
 def excluir_usuario(request, usuario_id):
     usuario = Usuario.objects.get(pk = usuario_id)
 
     if request.method == 'POST':
-        usuario.delete()
+        usuario.ativo = False
         return redirect('area_admin')
 
 def editar_livro(request, livro_id):

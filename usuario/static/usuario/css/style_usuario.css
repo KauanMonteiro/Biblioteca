@@ -55,11 +55,28 @@ input[type="submit"]:hover {
 }
 
 a {
-  color: #fff; /* Cor do texto do link */
-  text-decoration: underline; /* Sublinhar o link */
-  transition: color 0.3s; /* Suavizar a transição da cor do texto */
+  color: #fff;
+  text-decoration: underline;
+  transition: color 0.3s; 
 }
 
 a:hover {
-  color: #006eff; /* Cor do texto do link ao passar o mouse */
+  color: #006eff; 
+}
+button {
+  display: block;
+  margin: 0 auto;
+  width: auto;
+  padding: 0.6rem 1.6rem;
+  font-size: 1.4rem;
+  background-color: #001d63;
+  color: #fff;
+  border: none;
+  border-radius: 999px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+button:hover {
+  background-color: #0046b8;
 }

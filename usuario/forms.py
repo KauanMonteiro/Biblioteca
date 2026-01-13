@@ -14,12 +14,28 @@ def strong_password(password):
         )
 
 class CadastroForm(forms.ModelForm):
+    senha = forms.CharField(
+        label='Senha',
+        widget=forms.PasswordInput(),
+        validators=[strong_password]
+    )
+    senha2 = forms.CharField(
+        label='Senha',
+        widget=forms.PasswordInput(),
+    )
     class Meta:
         model = Usuario
         fields = ['nome', 'email', 'senha']
-        widgets = {
-            'senha': forms.PasswordInput(),
-        }
+
+    def clean(self):
+        cleaned_data = super().clean()
+        password = cleaned_data.get('password')
+        password2 = cleaned_data.get('password2')
+
+        if password and password2 and password != password2:
+            raise ValidationError(
+                {'senha2':'As senhas não são iguais.'}
+            )
 class LoginForm(forms.ModelForm):
     class Meta:
         model = Usuario
