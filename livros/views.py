@@ -6,18 +6,15 @@ from django.shortcuts import redirect, get_object_or_404
 from django.urls import reverse
 from django.contrib.auth.decorators import login_required
 from usuario.models import Usuario
-from django.template import loader
-from django.conf import settings
-import mimetypes
-import os
-
+from django.contrib import messages
+from .forms import CadastroLivroForm,EditarLivroForm
 def home(request):
     if 'usuario' not in request.session:
         return redirect('login')
     
     usuario_id = request.session.get('usuario')
     usuario = get_object_or_404(Usuario, pk=usuario_id)
-    livros = Livro.objects.all()
+    livros = Livro.objects.all().exclude(deletado = True)
     return render(request, 'livros/pages/home.html', context={'livros': livros, 'usuario':usuario})
 
 def category(request, category_id):
@@ -88,33 +85,17 @@ def cadastrar_livro(request):
     
     usuario_id = request.session.get('usuario')
     usuario = get_object_or_404(Usuario, pk=usuario_id)
-
-    if usuario.cargo == 'Admin':
-        if request.method == 'POST':
-            titulo = request.POST.get('titulo')
-            descricao = request.POST.get('descricao')
-            paginas = request.POST.get('paginas')
-            autor = request.POST.get('autor')
-            data_publicacao = request.POST.get('data_publicacao')
-            category_ids = request.POST.getlist('category') 
-            cover = request.FILES.get('cover')
-            arquivo = request.FILES.get('arquivo')
-            
-            livro = Livro.objects.create(
-                titulo=titulo,
-                descricao=descricao,
-                paginas=paginas,
-                autor=autor,
-                data_publicacao=data_publicacao,
-                cover=cover,
-                arquivo_livro = arquivo
-            )
-            
-            for category_id in category_ids:
-                category = get_object_or_404(Category, id=category_id)
-                livro.category.add(category)
-        
-        return render(request, 'livros/pages/cadastro_livro.html', {'categories': categories})
+    if request.method == 'POST':
+        form = CadastroLivroForm(request.POST,request.FILES)
+        if form.is_valid():
+            form.save()
+            messages.success(request, 'Livro cadastrado com sucesso!')
+            return redirect('area_admin')
+        else:
+            messages.error(request, 'Por favor, corrija os erros.')
+    else:
+        form = CadastroLivroForm()
+    return render(request, 'livros/pages/cadastro_livro.html', {'form': form})
 
 def area_admin(request):
     if 'usuario' not in request.session:
@@ -133,6 +114,7 @@ def excluir_livro(request, livro_id):
 
     if request.method == 'POST':
         livro.deletado = True
+        livro.save()
         return redirect('area_admin')
     
 def excluir_usuario(request, usuario_id):
@@ -140,41 +122,23 @@ def excluir_usuario(request, usuario_id):
 
     if request.method == 'POST':
         usuario.ativo = False
+        usuario.save()
         return redirect('area_admin')
 
 def editar_livro(request, livro_id):
     livro = get_object_or_404(Livro, id=livro_id)
 
     if request.method == 'POST':
-        titulo = request.POST.get('titulo')
-        descricao = request.POST.get('descricao')
-        paginas = request.POST.get('paginas')
-        autor = request.POST.get('autor')
-        data_publicacao = request.POST.get('data_publicacao')
-        category_ids = request.POST.getlist('category')
-        cover = request.FILES.get('cover')
-        arquivo = request.FILES.get('arquivo')
-
-        if cover:
-            livro.cover = cover
-
-        if arquivo:
-            livro.arquivo_livro = arquivo
-         
-        livro.titulo = titulo
-        livro.descricao = descricao
-        livro.paginas = paginas
-        livro.autor = autor
-        livro.data_publicacao = data_publicacao
-
-        livro.category.set(Category.objects.filter(id__in=category_ids))
-
-        livro.save()
-        return redirect('home')
-
-    categories = Category.objects.all()
-    
+        form = EditarLivroForm(request.POST, request.FILES, instance=livro)
+        if form.is_valid():
+            form.save()
+            messages.success(request, 'Livro atualizado com sucesso!')
+            return redirect('area_admin')
+        else:
+            messages.error(request, 'Por favor, corrija os erros.') 
+    else:
+        form = EditarLivroForm(instance=livro)
     return render(request, 'livros/pages/editar_livro.html', {
-        'livro': livro,
-        'categories': categories
+        'form': form,
+        'livro': livro
     })

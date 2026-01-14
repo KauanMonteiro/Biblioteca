@@ -1,37 +1,46 @@
 {% include "livros/partials/head.html" %}
-<div class="formulario">
-    <h1>Cadastro do livro</h1>
-    <form action="" method="POST" enctype="multipart/form-data">
-        {% csrf_token %}
-        
-        <label for="titulo">Título</label>
-        <input type="text" id="titulo" name="titulo" required>
+<body>
+<form method="POST"
+      class="formulario container"
+      action="{% url 'cadastrar_livro' %}"
+      enctype="multipart/form-data">
 
-        <label for="descricao">Descrição</label>
-        <input type="text" id="descricao" name="descricao" required>
+    {% csrf_token %}
 
-        <label for="cover">Capa</label>
-        <input type="file" name="cover" id="cover" required>
+    <h1 class="titulo-form">Cadastro de livro</h1>
 
-        <label for="arquivo">Arquivo do livro</label>
-        <input type="file" id="arquivo" name="arquivo" accept=".pdf,.txt,.doc,.docx" required>
+    {% if form.non_field_errors %}
+        <div class="alert-box">
+            {{ form.non_field_errors }}
+        </div>
+    {% endif %}
 
-        <label for="paginas">Quantidade de páginas</label>
-        <input type="number" name="paginas" id="paginas" required>
-        
-        <label for="autor">Autor</label>
-        <input type="text" id="autor" name="autor" required>
+    {% for field in form %}
+        <div class="form-group">
+            <label for="{{ field.id_for_label }}" class="form-label">
+                {{ field.label }}
+            </label>
 
-        <label for="data_publicacao">Data de publicação</label>
-        <input type="date" name="data_publicacao" id="data_publicacao" required>
+            {{ field }}
 
-        <label for="category">Categorias</label>
-        <select name="category" multiple>
-            {% for category in categories %}
-                <option value="{{ category.id }}">{{ category.name }}</option>
-            {% endfor %}
-        </select>
+            {% if field.errors %}
+                <div class="alert-box">
+                    {{ field.errors }}
+                </div>
+            {% endif %}
+        </div>
+    {% endfor %}
 
-        <button type="submit">Cadastrar</button>
-    </form>
-</div>
+    <div class="form-actions">
+        <button type="submit" class="">
+            Cadastrar
+        </button>
+    </div>
+
+    <div class="login-link">
+        Já tem conta?
+        <a href="">Entrar</a>
+    </div>
+</form>
+</body>
+</html>
