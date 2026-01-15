@@ -401,3 +401,58 @@ h1, h2, h3, h4, h5, h6 {
   color: #000;
   border-color: #ccc;
 }
+
+.livro-detalhe {
+  display: flex;
+  flex-direction: column;
+}
+
+.livro-detalhe .livro-title {
+  text-align: center;
+  font-size: 3.2rem;
+  color: #001d63;
+  padding: 3rem 2rem 1rem;
+}
+
+.livro-detalhe .livro-cover {
+  display: flex;
+  justify-content: center;
+  padding: 2rem;
+}
+
+.livro-detalhe .livro-cover img {
+  max-width: 32rem;
+  border-radius: 1.2rem;
+  box-shadow: 0 6px 16px rgba(0,0,0,.25);
+}
+
+.livro-detalhe .livro-author {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  font-size: 1.6rem;
+}
+
+.livro-detalhe .livro-author i {
+  color: #001d63;
+  margin-right: .8rem;
+}
+
+/* Descrição completa */
+.livro-detalhe .livro-content h3 {
+  font-size: 2.2rem;
+  margin-bottom: 1rem;
+  color: #001d63;
+}
+
+.livro-detalhe .livro-content p {
+  line-height: 1.8;
+  font-size: 1.7rem;
+  text-align: justify;
+  white-space: normal;
+  word-break: break-word;
+}
+
+.livro-detalhe .livro-meta-container {
+  border-top: .1rem solid #ccc;
+}

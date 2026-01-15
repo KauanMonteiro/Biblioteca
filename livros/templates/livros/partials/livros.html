@@ -55,9 +55,9 @@
     <footer class="livro-footer">
         {% if not livro.emprestado %}
         {% if livro.id %}
-        <a class="livro-read-more button button-dark button-full-width" href="{% url 'emprestar_livro' livro.id %}">
-            <i class="fas fa-handshake"></i>
-            <span>Emprestar</span>
+        <a class="livro-read-more button button-dark button-full-width" href="{% url 'ver_mais' livro.id %}">
+            <i class="fas fa-eyes"></i>
+            <span>Ver Mais</span>
         </a>
     {% endif %}
     

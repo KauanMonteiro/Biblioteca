@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+
 {% load static %}
 <html lang="en">
 <head>
@@ -7,6 +8,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Cadastro</title>
 </head>
+
+
 <body>
 <form method="POST" class="formulario container" action="{% url "login" %}">
     {% csrf_token %}
@@ -38,6 +41,10 @@
         <button type="submit" class="">
             Entrar
         </button>
+    </div>
+        <div class="login-link">
+        Não tem conta?
+        <a href="{% url "cadastro" %}">Cadastre-se</a>
     </div>
 </form>
 </body>

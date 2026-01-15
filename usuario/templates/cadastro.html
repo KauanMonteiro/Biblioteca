@@ -1,5 +1,7 @@
 <!DOCTYPE html>
 {% load static %}
+
+
 <html lang="en">
 <head>
     <link rel="stylesheet" href="{% static 'usuario/css/style_usuario.css' %}">
@@ -8,6 +10,7 @@
     <title>Cadastro</title>
 </head>
 <body>
+    
 <form method="POST" class="formulario container" action="{% url "cadastro" %}">
     {% csrf_token %}
 
@@ -43,7 +46,7 @@
 
     <div class="login-link">
         Já tem conta?
-        <a href="">Entrar</a>
+        <a href="{% url "login" %}">Entrar</a>
     </div>
 </form>
 </body>

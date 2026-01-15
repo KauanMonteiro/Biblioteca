@@ -11,7 +11,7 @@ class Category(models.Model):
 
 class Livro(models.Model):
     titulo = models.CharField(max_length=65)
-    descricao = models.CharField(max_length=200, null=True, blank=True)
+    descricao = models.CharField(null=True, blank=True)
     paginas = models.IntegerField(null=True, blank=True)
     autor = models.CharField(max_length=50, null=True, blank=True)
     emprestado = models.BooleanField(default=False)

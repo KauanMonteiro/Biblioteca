@@ -1,0 +1,96 @@
+{% include "livros/partials/head.html" %}
+{% include "livros/partials/header.html" %}
+
+<div class="livro livro-detalhe">
+
+    <h1 class="livro-title livro-detalhe-title">
+        {{ livro.titulo }}
+    </h1>
+
+    {% if livro.cover %}
+    <div class="livro-cover livro-detalhe-cover">
+        <img src="{{ livro.cover.url }}" alt="Capa do Livro">
+    </div>
+    {% endif %}
+
+    <div class="livro-author livro-detalhe-author">
+        <p class="livro-detalhe-author-item">
+            <i class="fas fa-user"></i> {{ livro.autor }}
+        </p>
+
+        <p class="livro-detalhe-author-item">
+            <i class="fas fa-calendar-alt"></i>
+            {{ livro.data_publicacao|date:"d/m/Y" }}
+        </p>
+
+        <p class="livro-detalhe-author-item">
+            <i class="fas fa-layer-group"></i>
+            {% for categoria in livro.category.all %}
+                <span class="livro-detalhe-category">
+                    {{ categoria.name }}
+                </span>
+            {% endfor %}
+        </p>
+    </div>
+
+    <div class="livro-content livro-detalhe-content">
+        <h3 class="livro-detalhe-subtitle">Descrição completa</h3>
+        <p class="livro-detalhe-descricao">
+            {{ livro.descricao }}
+        </p>
+    </div>
+
+    <div class="livro-meta-container livro-detalhe-meta-container">
+        <div class="livro-meta livro-detalhe-meta">
+            <h3 class="livro-detalhe-meta-title">Páginas</h3>
+            <p class="livro-detalhe-meta-text">
+                {{ livro.paginas }}
+            </p>
+        </div>
+
+        <div class="livro-meta livro-detalhe-meta">
+            <h3 class="livro-detalhe-meta-title">Disponibilidade</h3>
+            <p class="livro-detalhe-meta-text">
+                {% if livro.emprestado %}
+                    Indisponível para empréstimo
+                {% else %}
+                    Disponível para empréstimo
+                {% endif %}
+            </p>
+        </div>
+    </div>
+
+    <!-- BOTÕES -->
+    <footer class="livro-footer livro-detalhe-footer">
+
+        {% if not livro.emprestado %}
+            <a class="button button-dark button-full-width livro-detalhe-button"
+               href="{% url 'emprestar_livro' livro.id %}">
+                <i class="fas fa-handshake"></i>
+                <span>Emprestar</span>
+            </a>
+
+        {% else %}
+            {% if livro.emprestado_por_id == request.session.usuario %}
+                <a class="button button-dark button-full-width livro-detalhe-button"
+                   href="{% url 'devolver_livro' livro.id %}">
+                    <i class="fas fa-undo"></i>
+                    <span>Devolver</span>
+                </a>
+            {% else %}
+                <button class="button button-disabled button-full-width livro-detalhe-button"
+                        disabled>
+                    <i class="fas fa-ban"></i>
+                    <span>Emprestado</span>
+                </button>
+            {% endif %}
+        {% endif %}
+
+        <a href="{% url 'home' %}"
+           class="button button-light button-full-width livro-detalhe-button">
+            Voltar
+        </a>
+
+    </footer>
+
+</div>

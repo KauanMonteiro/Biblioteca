@@ -8,6 +8,7 @@ from django.contrib.auth.decorators import login_required
 from usuario.models import Usuario
 from django.contrib import messages
 from .forms import CadastroLivroForm,EditarLivroForm
+
 def home(request):
     if 'usuario' not in request.session:
         return redirect('login')
@@ -21,14 +22,14 @@ def category(request, category_id):
     if 'usuario' not in request.session:
         return redirect('login')
     categoria = Category.objects.get(pk=category_id)
-    livros = Livro.objects.filter(category=categoria)
+    livros = Livro.objects.filter(category=categoria).exclude(deletado = True)
     return render(request, 'livros/pages/category.html', context={'livros': livros})
 
 def livros_por_categoria(request, categoria_id):
     if 'usuario' not in request.session:
         return redirect('login')
     categoria = Category.objects.get(pk=categoria_id)
-    livros = Livro.objects.filter(category=categoria)
+    livros = Livro.objects.filter(category=categoria).exclude(deletado = True)
     return render(request, 'livros/pages/livros_por_categoria.html', {'livros': livros, 'categoria': categoria})
 
 def area_usuario(request):
@@ -37,7 +38,7 @@ def area_usuario(request):
     
     usuario_id = request.session.get('usuario')
     usuario = get_object_or_404(Usuario, pk=usuario_id)
-    livros_emprestados = Livro.objects.filter(emprestado_por=usuario)
+    livros_emprestados = Livro.objects.filter(emprestado_por=usuario).exclude(deletado = True)
     return render(request, 'livros/pages/area_usuario.html', {'livros_emprestados': livros_emprestados, 'usuario': usuario})
 
 def emprestar_livro(request, livro_id):
@@ -142,3 +143,10 @@ def editar_livro(request, livro_id):
         'form': form,
         'livro': livro
     })
+
+def ver_mais(request, livro_id):
+    if 'usuario' not in request.session:
+        return redirect('login')
+    
+    livro = get_object_or_404(Livro, pk=livro_id)
+    return render(request, 'livros/pages/vermais.html', {'livro': livro})
