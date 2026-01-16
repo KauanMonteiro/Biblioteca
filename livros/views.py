@@ -7,7 +7,7 @@ from django.urls import reverse
 from django.contrib.auth.decorators import login_required
 from usuario.models import Usuario
 from django.contrib import messages
-from .forms import CadastroLivroForm,EditarLivroForm
+from .forms import CadastroLivroForm,EditarLivroForm,CriarAvaliacao
 
 def home(request):
     if 'usuario' not in request.session:
@@ -150,3 +150,25 @@ def ver_mais(request, livro_id):
     
     livro = get_object_or_404(Livro, pk=livro_id)
     return render(request, 'livros/pages/vermais.html', {'livro': livro})
+
+def criar_avaliacao(request,livro_id):
+    if 'usuario' not in request.session:
+        return redirect('login')
+    usuario_id = request.session.get('usuario')
+    usuario = get_object_or_404(Usuario, pk=usuario_id)
+    livro = get_object_or_404(Livro, pk=livro_id)
+
+    if request.method == 'POST':
+        form = CriarAvaliacao(request.POST)
+        if form.is_valid():
+            avaliacao = form.save(commit=False)
+            avaliacao.livro = livro
+            avaliacao.usuario = usuario
+            avaliacao.save()
+            messages.success(request, 'Avaliação cadastrado com sucesso!')
+            return home
+        else:
+            messages.error(request, 'Por favor, corrija os erros.')
+    else:
+        form = CriarAvaliacao()
+    return render(request, 'livros/pages/criar_avaliacao.html',{'livro':livro,'form':form})

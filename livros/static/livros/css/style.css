@@ -52,39 +52,40 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .search-form {
-  border: .1rem solid black;
-  max-width: 64rem;
-  margin: auto;
-  border-radius: 0rem;
+  margin: 1.6rem auto;
+  max-width: 600px;
   position: relative;
-  transition: all 300ms ease-in-out;
-}
-
-.search-input, .search-button {
-  border: none;
-  background: none;
-  outline: none;
+  transition: all 0.3s ease;
+  border: 2px solid transparent;
+  border-radius: 50px;
+  overflow: hidden;
+  background: white;
 }
 
 .search-input {
   width: 100%;
-  padding-right: 3rem;
+  padding: 1.4rem 5.5rem 1.4rem 2rem;
+  border: none;
+  font-size: 1.7rem;
 }
 
 .search-button {
   position: absolute;
-  top: 0;
   right: 0;
-}
-
-.search-button:focus {
-  outline: 1px solid #fff;
-  background: rgba(0, 0, 0, .05);
+  top: 0;
+  bottom: 0;
+  width: 5rem;
+  background: none;
+  border: none;
+  font-size: 2rem;
+  color: #555;
+  cursor: pointer;
+  transition: all 0.25s ease;
 }
 
 .search-form:focus-within {
   border-color: #269fe6;
-  background-color: #fff;
+  box-shadow: 0 0 0 3px rgba(38, 159, 230, 0.3);
 }
 
 .search-form:focus-within .search-button {
@@ -217,34 +218,30 @@ h1, h2, h3, h4, h5, h6 {
   height: 100%;
   width: 0;
   position: fixed;
+  z-index: 1000;
   top: 0;
   left: 0;
   background-color: #001d63;
   overflow-x: hidden;
-  transition: 0.5s;
-  padding-top: 60px;
-  z-index: 1000;
+  transition: 0.4s;
+  padding-top: 70px;
 }
 
-.sidebar ul {
-  list-style-type: none;
-  padding: 0;
-  margin: 0;
-}
-
-.sidebar ul li {
-  padding: 10px;
-  text-align: center;
+.sidebar.open {
+  width: 260px;
 }
 
 .sidebar ul li a {
-  color: white;
+  padding: 1.6rem 2.4rem;
   text-decoration: none;
+  font-size: 1.8rem;
+  color: white;
   display: block;
+  transition: 0.2s;
 }
 
-.sidebar ul li:hover {
-  background-color: #0046b8;
+.sidebar ul li a:hover {
+  background-color: rgba(255,255,255,0.15);
 }
 
 .openbtn {
@@ -455,4 +452,105 @@ h1, h2, h3, h4, h5, h6 {
 
 .livro-detalhe .livro-meta-container {
   border-top: .1rem solid #ccc;
+}
+@media (max-width: 768px) {
+
+  html {
+    font-size: 56.25%; 
+  }
+
+  .container {
+    padding: 1.5rem;
+    flex-direction: column;
+  }
+
+  .main-header-container {
+    flex-direction: column;
+    padding: 1.5rem;
+  }
+
+  .main-logo {
+    font-size: 3rem;
+    margin: 1rem 0;
+  }
+
+  .search-form {
+    width: 100%;
+    max-width: 100%;
+  }
+
+  .main-content-list {
+    grid-template-columns: 1fr;
+    gap: 3rem;
+  }
+
+  .livro-list-item {
+    max-width: 100%;
+  }
+
+  .main-footer {
+    flex-direction: column;
+    gap: 1.5rem;
+    text-align: center;
+  }
+
+  .openbtn {
+    top: 10px;
+    left: 10px;
+    font-size: 1.6rem;
+    padding: 8px 12px;
+  }
+
+  .formulario {
+    width: 90%;
+    padding: 1.5rem;
+    position: relative;
+    top: auto;
+    left: auto;
+    transform: none;
+    margin-top: 2rem;
+  }
+
+  .livro-detalhe .livro-cover img {
+    max-width: 100%;
+  }
+}
+
+@media (max-width: 480px) {
+
+  html {
+    font-size: 54%;
+  }
+
+  h1 {
+    font-size: 2.6rem;
+  }
+
+  .main-logo {
+    font-size: 2.6rem;
+  }
+
+  .livro-detalhe .livro-title {
+    font-size: 2.6rem;
+  }
+
+  .livro-content {
+    padding: 2rem 1.5rem;
+  }
+
+  /* Botões */
+  .botao,
+  .botao2 {
+    width: 100%;
+    justify-content: center;
+  }
+
+  /* Tabelas */
+  .tabela {
+    overflow-x: auto;
+  }
+
+  .tabela table {
+    min-width: 600px;
+  }
 }

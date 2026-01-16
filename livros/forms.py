@@ -1,6 +1,6 @@
 from django import forms
 from django.core.exceptions import ValidationError
-from .models import Livro
+from .models import Livro, Avaliacao
 
 class CadastroLivroForm(forms.ModelForm):
     class Meta:
@@ -22,3 +22,8 @@ class EditarLivroForm(forms.ModelForm):
             super().init(*args, **kwargs)
             
             self.fields['cover'].required = False
+
+class CriarAvaliacao(forms.ModelForm):
+    class Meta:
+        model = Avaliacao
+        fields = ['nota','comentario']

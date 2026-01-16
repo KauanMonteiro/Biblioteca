@@ -2,6 +2,7 @@ from pyexpat import model
 from unittest.util import _MAX_LENGTH
 from django.db import models
 from usuario.models import Usuario
+from django.core.validators import MinValueValidator, MaxValueValidator
 
 class Category(models.Model):
     name = models.CharField(max_length=65)
@@ -26,3 +27,14 @@ class Livro(models.Model):
 
     def __str__(self):
         return f"{self.titulo} - {self.autor}" 
+
+class Avaliacao(models.Model):
+    NOTAS = [(i, i) for i in range(6)]  
+
+    livro = models.ForeignKey(Livro, on_delete=models.CASCADE)
+    usuario = models.ForeignKey(Usuario, on_delete=models.CASCADE)
+    nota = models.IntegerField(choices=NOTAS)
+    comentario = models.TextField(null=True, blank=True)
+    data_avaliacao = models.DateField(auto_now_add=True)
+    def __str__(self):
+        return f"Avaliação de {self.usuario.username} para {self.livro.titulo}"
