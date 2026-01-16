@@ -1,0 +1,126 @@
+<script>function toggleComentario(avaliacaoId) {
+    const conteudoComentario = document.getElementById(`comentario-${avaliacaoId}`);
+    const botao = conteudoComentario.nextElementSibling;
+    
+    if (conteudoComentario.classList.contains('comentario-com-limitacao')) {
+        // Expandir
+        conteudoComentario.classList.remove('comentario-com-limitacao');
+        conteudoComentario.classList.add('comentario-expandido');
+        botao.textContent = 'Ver menos';
+    } else {
+        // Recolher
+        conteudoComentario.classList.remove('comentario-expandido');
+        conteudoComentario.classList.add('comentario-com-limitacao');
+        botao.textContent = 'Ver mais';
+    }
+}
+
+// Versão alternativa que verifica altura real (mais precisa)
+function initVerMais() {
+    document.querySelectorAll('.comentario-conteudo').forEach(container => {
+        const comentario = container.querySelector('.avaliacao-comentario');
+        // Se o conteúdo for muito longo naturalmente (sem contar caracteres)
+        if (comentario.scrollHeight > 100) { // Altura em pixels
+            container.classList.add('comentario-com-limitacao');
+            // Cria ou mostra botão se não existir
+            let botao = container.nextElementSibling;
+            if (!botao || !botao.classList.contains('ver-mais-btn')) {
+                botao = document.createElement('button');
+                botao.className = 'ver-mais-btn';
+                botao.textContent = 'Ver mais';
+                const avaliacaoId = container.id.split('-')[1];
+                botao.onclick = () => toggleComentario(avaliacaoId);
+                container.parentNode.insertBefore(botao, container.nextSibling);
+            }
+        }
+    });
+}
+
+document.addEventListener('DOMContentLoaded', initVerMais);
+
+function toggleComentario(avaliacaoId) {
+    const conteudoComentario = document.getElementById(`comentario-${avaliacaoId}`);
+    const botao = conteudoComentario.nextElementSibling;
+    
+    if (conteudoComentario.classList.contains('comentario-com-limitacao')) {
+        // Expandir
+        conteudoComentario.classList.remove('comentario-com-limitacao');
+        conteudoComentario.classList.add('comentario-expandido');
+        botao.textContent = 'Ver menos';
+    } else {
+        // Recolher
+        conteudoComentario.classList.remove('comentario-expandido');
+        conteudoComentario.classList.add('comentario-com-limitacao');
+        botao.textContent = 'Ver mais';
+    }
+}
+
+// Versão alternativa que verifica altura real (mais precisa)
+function initVerMais() {
+    document.querySelectorAll('.comentario-conteudo').forEach(container => {
+        const comentario = container.querySelector('.avaliacao-comentario');
+        // Se o conteúdo for muito longo naturalmente (sem contar caracteres)
+        if (comentario.scrollHeight > 100) { // Altura em pixels
+            container.classList.add('comentario-com-limitacao');
+            // Cria ou mostra botão se não existir
+            let botao = container.nextElementSibling;
+            if (!botao || !botao.classList.contains('ver-mais-btn')) {
+                botao = document.createElement('button');
+                botao.className = 'ver-mais-btn';
+                botao.textContent = 'Ver mais';
+                const avaliacaoId = container.id.split('-')[1];
+                botao.onclick = () => toggleComentario(avaliacaoId);
+                container.parentNode.insertBefore(botao, container.nextSibling);
+            }
+        }
+    });
+}
+
+// Executa quando o DOM estiver carregado
+document.addEventListener('DOMContentLoaded', initVerMais);
+</script>
+<div class="avaliacao-card">
+
+    <div class="avaliacao-header">
+        <span class="avaliacao-usuario">
+            <i class="fas fa-user"></i> {{ avaliacao.usuario.nome }}
+        </span>
+
+        <span class="avaliacao-data">
+            {{ avaliacao.data_avaliacao|date:"d/m/Y" }}
+        </span>
+    </div>
+
+    <div class="avaliacao-estrelas">
+        {% for i in "01234" %}
+            {% if forloop.counter0 < avaliacao.nota %}
+                <i class="fas fa-star estrela-ativa"></i>
+            {% else %}
+                <i class="far fa-star estrela-inativa"></i>
+            {% endif %}
+        {% endfor %}
+    </div>
+
+    {% if avaliacao.comentario %}
+        <div class="comentario-container">
+            <div class="comentario-conteudo {% if avaliacao.comentario|length > 200 %}comentario-com-limitacao{% endif %}" 
+                 id="comentario-{{ avaliacao.id }}">
+                <p class="avaliacao-comentario">
+                    {{ avaliacao.comentario }}
+                </p>
+            </div>
+            
+            {% if avaliacao.comentario|length > 200 %}
+                <button class="ver-mais-btn" 
+                        onclick="toggleComentario('{{ avaliacao.id }}')">
+                    Ver mais
+                </button>
+            {% endif %}
+        </div>
+    {% else %}
+        <p class="avaliacao-sem-comentario">
+            <i>Sem comentário.</i>
+        </p>
+    {% endif %}
+
+</div>

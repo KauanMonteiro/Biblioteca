@@ -36,5 +36,6 @@ class Avaliacao(models.Model):
     nota = models.IntegerField(choices=NOTAS)
     comentario = models.TextField(null=True, blank=True)
     data_avaliacao = models.DateField(auto_now_add=True)
+    deletado = models.BooleanField(default=False)
     def __str__(self):
-        return f"Avaliação de {self.usuario.username} para {self.livro.titulo}"
+        return f"Avaliação de {self.usuario.nome} para {self.livro.titulo}"

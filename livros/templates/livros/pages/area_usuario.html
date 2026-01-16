@@ -15,4 +15,22 @@
         </div>
     </main>
 </div>
+<div class="container mt-5">
+    <h3>Suas avaliações:</h3>
+    <main class="main-content-container">
+        <div class="main-content main-content-list container">
+            
+    {% if avaliacao %}
+        {% for avaliacao in avaliacao %}
+            {% include "livros/partials/avaliacao.html"%}
+        {% endfor %}
+    {% else %}
+        <p class="sem-avaliacoes">
+            <i class="fas fa-info-circle"></i>
+            Você não avaliou nem um livro
+        </p>
+    {% endif %}
+        </div>
+    </main>
+</div>
 {% endblock content %}

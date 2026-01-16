@@ -71,6 +71,10 @@
                     <i class="fas fa-undo"></i>
                     <span>Devolver</span>
                 </a>
+                <a class="livro-return button button-dark button-full-width" href="{% url 'avaliar_livro' livro.id %}">
+                    <i class="fas fa-star"></i>
+                    <span>Avaliar</span>
+                </a>
             {% endif %}
         {% endif %}
     </footer>

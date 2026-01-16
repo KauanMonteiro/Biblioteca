@@ -60,7 +60,6 @@
         </div>
     </div>
 
-    <!-- BOTÕES -->
     <footer class="livro-footer livro-detalhe-footer">
 
         {% if not livro.emprestado %}
@@ -94,3 +93,21 @@
     </footer>
 
 </div>
+<section class="avaliacoes container">
+
+    <h2 class="avaliacoes-titulo">
+        <i class="fas fa-star"></i> Avaliações
+    </h2>
+
+    {% if avaliacao %}
+        {% for avaliacao in avaliacao %}
+            {% include "livros/partials/avaliacao.html"%}
+        {% endfor %}
+    {% else %}
+        <p class="sem-avaliacoes">
+            <i class="fas fa-info-circle"></i>
+            Este livro ainda não possui avaliações.
+        </p>
+    {% endif %}
+
+</section>

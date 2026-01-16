@@ -1,6 +1,6 @@
 from django.shortcuts import render
 from django.http import HttpResponse, FileResponse
-from livros.models import Livro, Category
+from livros.models import Livro, Category,Avaliacao
 from datetime import datetime, timedelta
 from django.shortcuts import redirect, get_object_or_404
 from django.urls import reverse
@@ -39,7 +39,8 @@ def area_usuario(request):
     usuario_id = request.session.get('usuario')
     usuario = get_object_or_404(Usuario, pk=usuario_id)
     livros_emprestados = Livro.objects.filter(emprestado_por=usuario).exclude(deletado = True)
-    return render(request, 'livros/pages/area_usuario.html', {'livros_emprestados': livros_emprestados, 'usuario': usuario})
+    avaliacao = Avaliacao.objects.filter(usuario=usuario).exclude(deletado = True)
+    return render(request, 'livros/pages/area_usuario.html', {'livros_emprestados': livros_emprestados, 'usuario': usuario,'avaliacao':avaliacao})
 
 def emprestar_livro(request, livro_id):
     if 'usuario' not in request.session:
@@ -147,9 +148,9 @@ def editar_livro(request, livro_id):
 def ver_mais(request, livro_id):
     if 'usuario' not in request.session:
         return redirect('login')
-    
     livro = get_object_or_404(Livro, pk=livro_id)
-    return render(request, 'livros/pages/vermais.html', {'livro': livro})
+    avaliacao = Avaliacao.objects.filter(livro=livro).exclude(deletado = True)
+    return render(request, 'livros/pages/vermais.html', {'livro': livro,'avaliacao':avaliacao})
 
 def criar_avaliacao(request,livro_id):
     if 'usuario' not in request.session:
