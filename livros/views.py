@@ -97,7 +97,7 @@ def cadastrar_livro(request):
             messages.error(request, 'Por favor, corrija os erros.')
     else:
         form = CadastroLivroForm()
-    return render(request, 'livros/pages/cadastro_livro.html', {'form': form})
+    return render(request, 'livros/pages/cadastro_livro.html', {'form': form, 'action_url':reverse('cadastrar_livro')})
 
 def area_admin(request):
     if 'usuario' not in request.session:
@@ -142,7 +142,8 @@ def editar_livro(request, livro_id):
         form = EditarLivroForm(instance=livro)
     return render(request, 'livros/pages/editar_livro.html', {
         'form': form,
-        'livro': livro
+        'livro': livro,
+        'action_url':reverse('editar_livro',args=[livro.id])
     })
 
 def ver_mais(request, livro_id):
@@ -167,9 +168,9 @@ def criar_avaliacao(request,livro_id):
             avaliacao.usuario = usuario
             avaliacao.save()
             messages.success(request, 'Avaliação cadastrado com sucesso!')
-            return home
+            return redirect('home')
         else:
             messages.error(request, 'Por favor, corrija os erros.')
     else:
         form = CriarAvaliacao()
-    return render(request, 'livros/pages/criar_avaliacao.html',{'livro':livro,'form':form})
+    return render(request, 'livros/pages/criar_avaliacao.html',{'livro':livro,'form':form, 'action_url':reverse(criar_avaliacao,args=[livro.id])})

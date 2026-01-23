@@ -36,13 +36,9 @@ class CadastroForm(forms.ModelForm):
             raise ValidationError(
                 {'senha2':'As senhas não são iguais.'}
             )
-class LoginForm(forms.ModelForm):
-    class Meta:
-        model = Usuario
-        fields = ['email', 'senha'] 
-        widgets = {
-            'senha': forms.PasswordInput(),
-        }
+class LoginForm(forms.Form):
+    email = forms.EmailField()
+    senha = forms.CharField(widget=forms.PasswordInput)
 
     def clean(self):
             cleaned_data = super().clean()

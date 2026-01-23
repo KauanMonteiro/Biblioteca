@@ -2,7 +2,6 @@ from pyexpat import model
 from unittest.util import _MAX_LENGTH
 from django.db import models
 from usuario.models import Usuario
-from django.core.validators import MinValueValidator, MaxValueValidator
 
 class Category(models.Model):
     name = models.CharField(max_length=65)
@@ -36,6 +35,23 @@ class Avaliacao(models.Model):
     nota = models.IntegerField(choices=NOTAS)
     comentario = models.TextField(null=True, blank=True)
     data_avaliacao = models.DateField(auto_now_add=True)
+    denuncias_count = models.PositiveIntegerField(default=0)
     deletado = models.BooleanField(default=False)
     def __str__(self):
         return f"Avaliação de {self.usuario.nome} para {self.livro.titulo}"
+    
+class Denuncia(models.Model):
+    MOTIVOS=[
+        ('SPAM', 'Conteúdo inadequado'),
+        ('OFENSIVO', 'Linguagem ofensiva'),
+        ('FALSO', 'Informação falsa'),
+        ('OUTRO', 'Outro motivo'),
+    ]
+
+    avaliacao = models.ForeignKey(Avaliacao, on_delete=models.CASCADE)
+    motivo = models.CharField((""),choices=MOTIVOS)
+    comentario = models.TextField(blank=True, null=True)
+    usuario = models.ForeignKey(Usuario, on_delete=models.CASCADE)
+    criado_em = models.DateTimeField(auto_now_add=True)
+    def __str__(self):
+        return f"Denúncia por {self.usuario} em {self.reclamacao.titulo}"
