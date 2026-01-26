@@ -28,6 +28,7 @@ class CriarAvaliacao(forms.ModelForm):
         model = Avaliacao
         fields = ['nota','comentario']
 
-class Denuncia(forms.ModelForm):
+class DenunciaForm(forms.ModelForm):
     class Meta:
-        models= Denuncia
+        model = Denuncia
+        fields = ['motivo','comentario']

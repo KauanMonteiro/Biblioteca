@@ -1,5 +1,3 @@
-from pyexpat import model
-from unittest.util import _MAX_LENGTH
 from django.db import models
 from usuario.models import Usuario
 
@@ -39,7 +37,7 @@ class Avaliacao(models.Model):
     deletado = models.BooleanField(default=False)
     def __str__(self):
         return f"Avaliação de {self.usuario.nome} para {self.livro.titulo}"
-    
+
 class Denuncia(models.Model):
     MOTIVOS=[
         ('SPAM', 'Conteúdo inadequado'),

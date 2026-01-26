@@ -1,4 +1,5 @@
-<script>function toggleComentario(avaliacaoId) {
+<script>
+    function toggleComentario(avaliacaoId) {
     const conteudoComentario = document.getElementById(`comentario-${avaliacaoId}`);
     const botao = conteudoComentario.nextElementSibling;
     
@@ -14,71 +15,9 @@
         botao.textContent = 'Ver mais';
     }
 }
-
-// Versão alternativa que verifica altura real (mais precisa)
-function initVerMais() {
-    document.querySelectorAll('.comentario-conteudo').forEach(container => {
-        const comentario = container.querySelector('.avaliacao-comentario');
-        // Se o conteúdo for muito longo naturalmente (sem contar caracteres)
-        if (comentario.scrollHeight > 100) { // Altura em pixels
-            container.classList.add('comentario-com-limitacao');
-            // Cria ou mostra botão se não existir
-            let botao = container.nextElementSibling;
-            if (!botao || !botao.classList.contains('ver-mais-btn')) {
-                botao = document.createElement('button');
-                botao.className = 'ver-mais-btn';
-                botao.textContent = 'Ver mais';
-                const avaliacaoId = container.id.split('-')[1];
-                botao.onclick = () => toggleComentario(avaliacaoId);
-                container.parentNode.insertBefore(botao, container.nextSibling);
-            }
-        }
-    });
-}
-
-document.addEventListener('DOMContentLoaded', initVerMais);
-
-function toggleComentario(avaliacaoId) {
-    const conteudoComentario = document.getElementById(`comentario-${avaliacaoId}`);
-    const botao = conteudoComentario.nextElementSibling;
-    
-    if (conteudoComentario.classList.contains('comentario-com-limitacao')) {
-        // Expandir
-        conteudoComentario.classList.remove('comentario-com-limitacao');
-        conteudoComentario.classList.add('comentario-expandido');
-        botao.textContent = 'Ver menos';
-    } else {
-        // Recolher
-        conteudoComentario.classList.remove('comentario-expandido');
-        conteudoComentario.classList.add('comentario-com-limitacao');
-        botao.textContent = 'Ver mais';
-    }
-}
-
-// Versão alternativa que verifica altura real (mais precisa)
-function initVerMais() {
-    document.querySelectorAll('.comentario-conteudo').forEach(container => {
-        const comentario = container.querySelector('.avaliacao-comentario');
-        // Se o conteúdo for muito longo naturalmente (sem contar caracteres)
-        if (comentario.scrollHeight > 100) { // Altura em pixels
-            container.classList.add('comentario-com-limitacao');
-            // Cria ou mostra botão se não existir
-            let botao = container.nextElementSibling;
-            if (!botao || !botao.classList.contains('ver-mais-btn')) {
-                botao = document.createElement('button');
-                botao.className = 'ver-mais-btn';
-                botao.textContent = 'Ver mais';
-                const avaliacaoId = container.id.split('-')[1];
-                botao.onclick = () => toggleComentario(avaliacaoId);
-                container.parentNode.insertBefore(botao, container.nextSibling);
-            }
-        }
-    });
-}
-
-// Executa quando o DOM estiver carregado
 document.addEventListener('DOMContentLoaded', initVerMais);
 </script>
+
 <div class="avaliacao-card">
 
     <div class="avaliacao-header">
@@ -88,6 +27,10 @@ document.addEventListener('DOMContentLoaded', initVerMais);
 
         <span class="avaliacao-data">
             {{ avaliacao.data_avaliacao|date:"d/m/Y" }}
+        </span>
+
+        <span>
+            <a href="{% url "denunciar" avaliacao.id %}"><i class="fas fa-exclamation-triangle"></i></a>
         </span>
     </div>
 

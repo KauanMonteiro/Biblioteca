@@ -687,7 +687,58 @@ h1, h2, h3, h4, h5, h6 {
   margin: 1rem 0 0 0;
 }
 
-/* Responsividade */
+.messages-container {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  margin: 2rem 0;
+}
+
+.message {
+  padding: 1.2rem 1.6rem;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  background: #f2f2f2;
+  color: #444;
+  font-size: 1.6rem;
+}
+
+.message-error {
+  border-color: #b00020;
+  background: #fdecea;
+  color: #b00020;
+}
+
+.message-success {
+  border-color: #0e7c3a;
+  background: #e6f4ea;
+  color: #0e7c3a;
+}
+
+.message-warning {
+  border-color: #b26a00;
+  background: #fff4e5;
+  color: #b26a00;
+}
+
+.message-alert {
+  border-color: #8a1c1c;
+  background: #f9e6e6;
+  color: #8a1c1c;
+}
+
+.message-info {
+  border-color: #001d63;
+  background: #e8eefc;
+  color: #001d63;
+}
+
+.message-debug {
+  border-color: #666;
+  background: #eeeeee;
+  color: #444;
+}
+
 @media (max-width: 768px) {
   .avaliacao-card {
     padding: 2rem;

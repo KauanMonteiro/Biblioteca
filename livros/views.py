@@ -7,7 +7,7 @@ from django.urls import reverse
 from django.contrib.auth.decorators import login_required
 from usuario.models import Usuario
 from django.contrib import messages
-from .forms import CadastroLivroForm,EditarLivroForm,CriarAvaliacao
+from .forms import CadastroLivroForm,EditarLivroForm,CriarAvaliacao, DenunciaForm
 
 def home(request):
     if 'usuario' not in request.session:
@@ -174,3 +174,28 @@ def criar_avaliacao(request,livro_id):
     else:
         form = CriarAvaliacao()
     return render(request, 'livros/pages/criar_avaliacao.html',{'livro':livro,'form':form, 'action_url':reverse(criar_avaliacao,args=[livro.id])})
+
+def denunciar(request,avaliacao_id):
+    if 'usuario' not in request.session:
+        return redirect('login')
+    usuario_id = request.session.get('usuario')
+    usuario = get_object_or_404(Usuario, pk=usuario_id)
+    avaliacao = get_object_or_404(Avaliacao,pk=avaliacao_id)
+    if request.method == 'POST':
+        form = DenunciaForm(request.POST)
+        if form.is_valid():
+            denuncia = form.save(commit=False)
+            denuncia.usuario = usuario
+            denuncia.avaliacao = avaliacao
+            denuncia.save()
+            avaliacao.denuncias_count += 1
+            if avaliacao.denuncias_count >= 10:
+                avaliacao.deletado = True
+            avaliacao.save()
+            messages.success(request, 'Denuncia realizada com sucesso!')
+        else:
+            messages.error(request, 'Por favor, corrija os erros.')
+    else:
+        form = DenunciaForm()
+    return render(request,'livros/pages/denuncia.html',{'action_url':reverse(denunciar,args=[avaliacao_id]),'avaliacao':avaliacao,'form':form})
+
