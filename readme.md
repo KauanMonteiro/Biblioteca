@@ -5,8 +5,7 @@ Plataforma web para gestão de acervo digital com empréstimo de livros eletrôn
 ## Funcionalidades Principais
 
 - **Gestão de Acervo**:
-  - Cadastro de livros com metadados (título, autor, ISBN)
-  - Upload de arquivos em múltiplos formatos (PDF, DOCX, TXT)
+  - Cadastro de livros 
   - Categorização por gêneros literários
 
 - **Controle de Usuários**:
@@ -17,7 +16,6 @@ Plataforma web para gestão de acervo digital com empréstimo de livros eletrôn
 - **Operações Principais**:
   - Empréstimo digital com registro temporal
   - Busca por título e autor
-  - Visualizador integrado para documentos textuais
 
 - **Administração**:
   - Dashboard de gestão de livros e usuários
@@ -27,6 +25,5 @@ Plataforma web para gestão de acervo digital com empréstimo de livros eletrôn
 ## Tecnologias Utilizadas
 
 - **Backend**: Django 4.x
-- **Processamento de Documentos**: python-docx
 - **Gerenciamento de Arquivos**: Pillow (imagens)
 - **Frontend**: HTML5, CSS3
